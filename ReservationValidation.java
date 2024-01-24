@@ -1,14 +1,15 @@
 
-import java.io.Console;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class ReservationValidation {
+  static List<Boat> boats;
+  public static PrintStream printingFile;
 
   public static void main(String [] args) {
     Scanner keyboardInput = new Scanner(System.in);
@@ -28,9 +29,16 @@ public class ReservationValidation {
     int recentYear = 2024;
     int hour = 0;
     int minute = 0;
+    int boatChoice = 0;
+    int nameCountMotorBoat = 0;
+    int nameCountRowingBoat = 0;
     String name = "";
     String email;
     String number;
+
+    boats = new ArrayList<Boat>();
+    RowingBoat rowingBoat;
+    MotorBoat motorBoat;
 
     do {
       try {
@@ -176,7 +184,7 @@ public class ReservationValidation {
       PrintStream console = System.out;
 
       // ---
-      PrintStream printingFile = new PrintStream(new FileOutputStream(filePath), true );
+      printingFile = new PrintStream(new FileOutputStream(filePath), true );
       System.setOut(printingFile);
 
       System.out.println();
@@ -187,13 +195,62 @@ public class ReservationValidation {
       System.out.println("Number: " + number);
       System.out.println();
 
-      printingFile.close();
+//      printingFile.close();
 
       System.setOut(console);
 
       System.out.println("File created");
       System.out.println(filePath);
 
+
+      boolean reservationOver = false;
+      do {
+        boatChoice = 0;
+        try {
+          do {
+            System.setOut(console);
+            System.out.println();
+            System.out.println("Press 1 for motorboat");
+            System.out.println("Press 2 for rowing boat");
+            boatChoice = keyboardInput.nextInt();
+            if (keyboardInput.hasNextLine()) {
+              keyboardInput.nextLine();
+            }
+          } while (boatChoice > 2 || boatChoice <= 0);
+        } catch (InputMismatchException e) {
+          System.out.println("You must input a number");
+          keyboardInput.nextLine();
+        }
+
+
+        Boat boat;
+        switch (boatChoice) {
+          case 1 -> {
+            nameCountMotorBoat++;
+            boat = new MotorBoat(nameCountMotorBoat);
+          }
+          case 2 -> {
+            nameCountRowingBoat++;
+            boat = new RowingBoat(nameCountRowingBoat);
+          }
+          default -> boat = new RowingBoat(0);
+        }
+        boat.askAdditionalQuestions();
+        boats.add(boat);
+
+
+        System.out.println("Are you done with your reservation (y/n)");
+        String endingReservation;
+        endingReservation= keyboardInput.next();
+
+        if (endingReservation.equals("y")) {
+          reservationOver = true;
+        }
+      } while(!reservationOver);
+      console.close();
+      System.setOut(printingFile);
+      // loop through boats, saveFile() on every boat.
+      boats.forEach(Boat::saveFile);
     } catch (Exception e) {
       System.err.println("Error creating/writing to the file: " + e.getMessage());
     } finally {

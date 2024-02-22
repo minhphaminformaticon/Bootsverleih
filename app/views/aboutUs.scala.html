@@ -1,0 +1,105 @@
+@()()
+@main("Bootsverleih - MAKO"){
+    <body class="loading">
+    @header()
+    <section>
+        <div class="animatedElement nexttoaimg content" style="transition: 0.6s ease-in-out; transform: translateY(50%);">
+
+            <div style=" margin-top: 150px;" class="container2">
+                <div class="content">
+                <h2 style=" font-size: 150%; font-family: gunsan, serif" >a boat rental and sea lounge based in Zurich</h2>
+                </div>
+            </div>
+                <img  style=" position: absolute; right: 25%; top: 10%" src="@routes.Assets.versioned("images/cuteShark1.png")">
+            <h1 style="font-size: 900%;
+                margin-top: 17%;
+                position: absolute;
+                right: 0;
+                letter-spacing: 10px;">WE ARE MAKO!</h1>
+        </div>
+        <img style="height: 90%; border-radius: 0 0 150px" class="topLeftImg" src="@routes.Assets.versioned("images/sharkinsuit.jpg")">
+    </section>
+        <section style="margin-top: 100vh">
+            
+        </section>
+    <div style=" background-color: #FCF4DE; min-height: 90vh; border-radius: 80px;" class="marqueeText">
+        <h1 style="color: #333333; text-align: center" class="marqueeText">"魚がいっぱいの世界でサメになろう"</h1>
+        <p style="font-size: 20px; font-family: sans-serif; color: #333333; text-align: center; margin: 0;
+            padding: 0 0 5% 20px;" class="subtitles">(Be the shark in a world full of fish)
+        </p>
+        <div style="width: 20%; height: 20%; display: block; left: 40%; position: absolute">
+            <h1 style="color: #333333; font-size: 45px; text-align: center" >We Support quality fishes, put #WeSupportFishQuality to support good quality of fishes</h1>
+        </div>
+        <div class="flexContainer">
+            <img  style="  position: absolute; right: 5%; border-radius: 50px; " src="@routes.Assets.versioned("images/cuteShark6.png")">
+        </div>
+    </div>
+    <section style="min-height: 45vh;">
+        <div style="margin-top: 10%;">
+        <div style="width: 25%; height: 20%; display: block; right: 30%; position: absolute">
+            <h1  style=" font-size: 45px; text-align: left" >We make good and fun things. That's all we do.</h1>
+            <p style="font-size: 20px; color: #FCF4DE; font-family: sans-serif; text-align: left">For over a decade,
+                our team of seven skilled individuals has been dedicated to independently crafting boats.
+                Alongside our fantastic partners, we specialize in providing laid-back entertainment for both adults
+                and children. Collaborating with like-minded individuals who resonate with our genuine approach,
+                we take pleasure in creating thrilling projects. Our small but proud community is a testament to
+                our shared values and commitment to quality work.</p>
+        </div>
+        <img  style=" position: absolute; left: 25%; " src="@routes.Assets.versioned("images/sharkGang1.png")">
+        </div>
+    </section>
+        <section class="hidden" style="min-height: 200vh">
+            <div style="width:  15%; height: 20%; display: block; position: absolute; margin: 2%; margin-top: 9%">
+            <h1 style="font-size: 900%;
+                margin-top: 17%;
+                position: absolute;
+                letter-spacing: 10px;">Team Member
+            </h1>
+            </div>
+        </section>
+    </body>
+    @footer()
+    <style>
+        main{
+            width: 50%;
+        }
+
+    </style>
+    <script>
+            function Scrolldown() {
+                window.scroll(0,100);
+            }
+
+            window.onload = Scrolldown;
+    </script>
+}
+@header() = {
+    <header>
+        <h1 style="color:#FCF4DE;" class="stickyHeader stickyHeaderTransition">
+            ABOUT US
+        </h1>
+        <ul>
+            <li style="float: right;">
+                <a href="@controllers.routes.HomeController.index()" class="openButton">
+                    HOME
+                </a>
+            </li>
+        </ul>
+    </header>
+}
+@footer() ={
+    <footer>
+        <div class="footer-links">
+            <a onclick="openForm()" >Reservation</a>
+            <a href="@controllers.routes.HomeController.aboutUs()">About us</a>
+            <a href="@controllers.routes.HomeController.manage()">Manage Boats and Reservations</a>
+        </div>
+
+        <div class="footer-social-icons">
+            <a href="#" target="_blank">Facebook</a>
+            <a href="#" target="_blank">Twitter</a>
+            <a href="#" target="_blank">Instagram</a>
+        </div>
+        <p class="copyRight">&copy; 2024 MAKO. All rights reserved.</p>
+    </footer>
+}

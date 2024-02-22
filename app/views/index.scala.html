@@ -1,0 +1,208 @@
+@import forms.ReservationForm
+@import play.mvc.Http.Request
+
+@(reservationForm: Form[ReservationForm])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
+
+@main("Bootsverleih - MAKO") {
+  @header()
+    <div class="animatedElement" style="transition:  0.6s ease-in-out; transform: translateY(50%);">
+        <h1 style="font-size: 500%; margin-top: 20%;  text-decoration: underline;">WELCOME TO MAKO!</h1>
+        <p style="color: #FCF4DE;">マコはサメで、他の魚を食べるので、あなたの娯楽のためにここにいます</p>
+        <img  style=" position: absolute; right: 5%; top: 10%" src="@routes.Assets.versioned("images/cuteShark2.png")">
+        <img  style=" position: absolute; left: 5%; top: 10%" src="@routes.Assets.versioned("images/cuteShark.png")">
+    </div>
+    <section class="hidden" style="min-height: 70vh">
+    <img class="bgImage" style="; height: auto; margin-top: 4%; width: 1000px; object-fit: cover;" src="@routes.Assets.versioned("images/Bootsverleih.png")" alt="background image">
+    <p id="showReservation" style="display: none">@showReservation</p>
+    </section>
+    <div class="form-popup" id="myForm">
+        <div class="form-container">
+            <h1 style="color: #333333">Reservation</h1>
+            @helper.form(routes.HomeController.submitReservation()){
+                @helper.inputText(
+                    reservationForm("firstName"),
+                    Symbol("_label") -> "first name",
+                    Symbol("_showConstraints") -> false
+                )
+                @helper.inputText(
+                    reservationForm("lastName"),
+                    Symbol("_label") -> "last name",
+                    Symbol("_showConstraints") -> false
+                )
+                @helper.inputDate(
+                    reservationForm("date"),
+                    Symbol("_label") -> "date",
+                    Symbol("_showConstraints") -> false
+                )
+                @helper.input(
+                    reservationForm("timeFrom"),
+                    Symbol("_label") -> "time from",
+                    Symbol("_showConstraints") -> false
+                ) { (id, name, value, args) =>
+                    <input  type="time" id="@id" value="@value" name= "@name" @toHtmlArgs(args)>
+                }
+                @helper.input(
+                    reservationForm("timeTo"),
+                    Symbol("_label") -> "time to",
+                    Symbol("_showConstraints") -> false
+                ){ (id, name, value, args) =>
+                    <input type="time" id="@id" value="@value" name= "@name" @toHtmlArgs(args)>
+                }
+                @helper.inputText(
+                    reservationForm("email"),
+                    Symbol("_label") -> "email",
+                    Symbol("_showConstraints") -> false
+                )
+                @helper.inputText(
+                    reservationForm("phone"),
+                    Symbol("_label") -> "number",
+                    Symbol("_showConstraints") -> false
+                )
+
+
+                <button class="btn" type="submit">Send</button>
+                <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            }
+        </div>
+    </div>
+    <section  class="hidden">
+    <div class="flexContainer">
+        <img class="images" src="@routes.Assets.versioned("images/sharkgang.png")">
+        <div class="title">
+            <h1>WELCOME TO MAKO</h1>
+            <div class="aboutMako">
+                <h2 >At MAKO, we're all about laid-back enjoyment by the water. Our Mako boats are not just vessels;
+                    they're your ticket to an unforgettable day of laughter,
+                    sun-soaked escapades, and making memories with friends and family.
+                </h2>
+            </div>
+            <img  style=" position: absolute; right: 5%; top: 10%" src="@routes.Assets.versioned("images/cuteShark3.png")">
+            <h1>MEET MAKO</h1>
+            <div class="aboutMako">
+                <h2 >Our friendly Mako mascot is here to add a touch of whimsy to your boating experience.
+                    Spot Mako as you embark on your journey,
+                    ready to guide you through the waves and ensure your time on the water is filled with joy and laughter.
+                </h2>
+            </div>
+        </div>
+    </div>
+    </section >
+    <section class="hidden">
+    <div class="flexContainer">
+        <img class="images" src="@routes.Assets.versioned("images/sharkeatin.png")">
+        <div class="title">
+            <h1>SEA LOUNGE VIBES</h1>
+            <div class="aboutMako">
+                <h2 >Kick back and relax at our Sea Lounge,
+                    where the atmosphere is as easygoing as the gentle lapping of the waves.
+                    Enjoy snacks, refreshing drinks, and the company of fellow sea lovers.
+                    The Sea Lounge is your spot to unwind, swap stories, and soak in the lakeside ambiance.
+                </h2>
+            </div>
+            <img  style=" position: absolute; right: 5%; top: 10%" src="@routes.Assets.versioned("images/cuteShark4.png")">
+            <h1>MAKO BOATS</h1>
+            <div class="aboutMako">
+                <h2 >Hop on board our Mako boats – the life of the party on Lake Zurich.
+                    These boats are designed for casual fun,
+                    whether you're seeking a leisurely cruise or an afternoon of water sports.
+                    Easy to handle and always up for a good time,
+                    our Makos are your partners in crime for a carefree day on the lake.
+                </h2>
+            </div>
+        </div>
+    </div>
+    </section>
+    <div class="animatedElement" style="transition:  0.6s ease-in-out; transform: translateY(50%);">
+        <h1 style="font-size: 500%;text-decoration: underline; margin-top: 8%">MAKO BOAT EXCURSION!</h1>
+    </div>
+    <section class="hidden">
+    <img  class="bgImage" style="max-width: 100%; height: auto" src="@routes.Assets.versioned("images/sharkboat.jpg")" alt="background image">
+    </section>
+    <div class="animatedElement" style="transition:  0.6s ease-in-out; transform: translateY(50%);">
+        <h1 style="font-size: 500%;text-decoration: underline; margin-top: 8%">SEA LOUNGE!</h1>
+    </div>
+    <section class="hidden">
+        <img  class="bgImage" style="max-width: 100%; height: auto" src="@routes.Assets.versioned("images/sealounge.jpg")" alt="background image">
+    </section>
+    <div class="animatedElement">
+        <h1 style="font-size: 300%;text-decoration: underline; padding-bottom: 5%">ADDITIONAL  INFORMATION</h1>
+    </div>
+    <section style=" min-height: 70vh;" class="hidden">
+        <div class="row">
+            <div class="title column2">
+                <h1>MON - FRI</h1>
+                <div class="aboutMako">
+                    <h2>
+                        9:00-22:00
+                    </h2>
+                </div>
+            </div>
+            <div class="title column2">
+                <h1>SAT - SUN</h1>
+                <div class="aboutMako">
+                    <h2>
+                        8:00-23:00
+                    </h2>
+                </div>
+            </div>
+            <div class="title column2">
+                <h1>LOCATION</h1>
+                <div class="aboutMako">
+                    <h2>
+                        Utoquai 6, 8008 Zurich
+                    </h2>
+                </div>
+            </div>
+       </div>
+        <img  style=" position: absolute; left: 45%; top: 30%" src="@routes.Assets.versioned("images/cuteShark5.png")">
+    </section>
+    <div class="animatedElement">
+        <h1 style="font-size: 300%; text-decoration: underline; padding-bottom: 5%">WANT TO KNOW MORE ABOUT US?</h1>
+    </div>
+    <div style="overflow: hidden">
+        <div style="margin-top: 10%;margin-bottom: 25%" >
+            <a class="asd" href="@controllers.routes.HomeController.aboutUs()" > ABOUT US </a>
+        </div>
+    </div>
+    @footer()
+    <script>
+
+            function Scrolldown() {
+                window.scroll(0,300);
+            }
+
+            window.onload = Scrolldown;
+    </script>
+}
+@header() = {
+  <header>
+    <h1 class="stickyHeader stickyHeaderTransition">
+      MAKO - BOAT RENTAL & SEA LOUNGE
+    </h1>
+    <ul>
+      <li style="float: right"><a class="openButton" onclick="openForm()" >RESERVATION</a></li>
+      <li style="float: right"><a href="@controllers.routes.HomeController.drinks()" > DRINKS </a></li>
+      <li style="float: right"> <a href="@controllers.routes.HomeController.aboutUs()" > ABOUT US </a></li>
+        <li style="float: right"> <a href="@controllers.routes.HomeController.manage()" >MANAGE</a></li>
+    </ul>
+  </header>
+  }
+@footer() ={
+    <footer>
+            <div class="footer-links">
+                <a onclick="openForm()" >Reservation</a>
+                <a href="@controllers.routes.HomeController.aboutUs()">About us</a>
+                <a href="@controllers.routes.HomeController.manage()">Manage Boats and Reservations</a>
+            </div>
+
+            <div class="footer-social-icons">
+                <a href="#" target="_blank">Facebook</a>
+                <a href="#" target="_blank">Twitter</a>
+                <a href="#" target="_blank">Instagram</a>
+            </div>
+        <p class="copyRight">&copy; 2024 MAKO. All rights reserved.</p>
+    </footer>
+}
+
+
+

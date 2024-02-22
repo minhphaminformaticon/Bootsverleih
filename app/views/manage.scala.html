@@ -1,0 +1,79 @@
+@import forms.BoatManagement
+@import play.mvc.Http.Request
+
+@import views.html.helper.options
+@(boatManagement: Form[BoatManagement])(implicit request: Request, messages: play.i18n.Messages)
+@main("Bootsverleih - MAKO"){
+    @header()
+    <section style="margin-top: 20%; min-height: 70vh">
+        <div>
+            <h2 style="text-align: center">Reservation Details</h2>
+        </div>
+    </section>
+    <section style="min-height: 70vh">
+        <div style="left: 43%;
+            position: absolute;
+            width: 15%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); ">
+            @helper.form(routes.HomeController.submitBoatManagement()){
+
+                @helper.inputRadioGroup(
+                    boatManagement("typeOfBoat"),
+                    options = options("Rowing Boat" -> "Rowing Boat" , "Motor Boat" -> "Motor Boat") ,
+                    Symbol("_label") -> "type of boat",
+                    Symbol("_showConstraints") -> false
+                )
+                @helper.input(
+                    boatManagement("numberOfSeats"),
+                    Symbol("_label") -> "number of seats",
+                    Symbol("_showConstraints") -> false
+                ) {(id, name, value, args) =>
+                    <input class="numberInputField" type="number" min="1" max="8" id="@id" value="@value" name= "@name" @toHtmlArgs(args)>
+                }
+                @helper.input(
+                    boatManagement("numberOfHorsePower"),
+                    Symbol("_label") -> "number of horsepower",
+                    Symbol("_showConstraints") -> false
+                ) {(id, name, value, args) =>
+                    <input class="numberInputField" type="number" min="1" max="15" id="@id" value="@value" name= "@name" @toHtmlArgs(args)>
+                }
+                <button class="btn" type="submit">
+                    Send
+                </button>
+            }
+
+        </div>
+    </section>
+    @footer()
+}
+@header() = {
+    <header>
+        <h1 class="stickyHeader stickyHeaderTransition">
+            MANAGE BOATS AND RESERVATIONS
+        </h1>
+        <ul>
+            <li style="float: right"><a href="@controllers.routes.HomeController.index()" class="openButton">HOME</a></li>
+        </ul>
+    </header>
+}
+@footer() ={
+
+    <footer>
+        <div class="footer-links">
+            <a href="@controllers.routes.HomeController.index()">Home</a>
+            <a href="@controllers.routes.HomeController.aboutUs()">About us</a>
+        </div>
+
+        <div class="footer-social-icons">
+            <a href="#" target="_blank">Facebook</a>
+            <a href="#" target="_blank">Twitter</a>
+            <a href="#" target="_blank">Instagram</a>
+        </div>
+
+        <p class="copyRight" >&copy; 2024 MAKO. All rights reserved.</p>
+    </footer>
+}

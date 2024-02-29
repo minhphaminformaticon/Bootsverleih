@@ -1,4 +1,4 @@
-name := """test2"""
+name := """bootsverleih"""
 organization := "com.informaticon"
 
 version := "1.0-SNAPSHOT"

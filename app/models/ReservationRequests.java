@@ -39,7 +39,7 @@ public class ReservationRequests extends Model {
     public LocalDate reservationDate;
 
     @Column(name = "boat_FKID")
-    public int boatFKID;
+    public Integer boatFKID;
 }
 
 

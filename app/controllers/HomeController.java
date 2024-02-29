@@ -11,6 +11,7 @@ import play.twirl.api.Html;
 import javax.inject.Inject;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.Optional;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -33,10 +34,15 @@ public class HomeController extends Controller {
      * <code>GET</code> request with a path of <code>/</code>.
      */
     public Result index(Http.Request request) {
+        return ok(renderIndexView(request, getNewReservationForm(), false));
+    }
 
-        Form<ReservationForm> reservationForm = formFactory.form(ReservationForm.class);
-        reservationForm.withDirectFieldAccess(true);
-        return ok(renderIndexView(request, reservationForm, false));
+    public Result drinks(Http.Request request){
+        return ok(views.html.drinks.render( getNewReservationForm(), request, messages.preferred(request), false));
+    }
+
+    public Result aboutUs(Http.Request request){
+        return ok(views.html.aboutUs.render( getNewReservationForm(), request, messages.preferred(request), false));
     }
 
     public Result submitReservation(Http.Request request) throws FileNotFoundException {
@@ -46,7 +52,25 @@ public class HomeController extends Controller {
                 .bindFromRequest(request);
 
         if(submitForm.hasErrors()){
-            return badRequest(renderIndexView(request, submitForm, true));
+            Http.Headers headers = request.getHeaders();
+            Optional<String> optReferer = headers.get("Referer");
+            if (optReferer.isPresent()) {
+                String value = optReferer.get();
+                String shortenedValue = value.substring(value.lastIndexOf("/"));
+                switch (shortenedValue) {
+                    case "/drinks":
+                        return badRequest(views.html.drinks.render(submitForm, request, messages.preferred(request), true));
+
+                    case "/aboutUs":
+                        return badRequest(views.html.aboutUs.render(submitForm, request, messages.preferred(request), true));
+
+                    default:
+                        return badRequest(renderIndexView(request, submitForm, true));
+                }
+
+            } else {
+                return badRequest(renderIndexView(request, submitForm, true));
+            }
         }
         ReservationForm reservationForm = submitForm.get();
         ReservationRequests reservationRequests = new ReservationRequests();
@@ -57,30 +81,24 @@ public class HomeController extends Controller {
         reservationRequests.timeFrom = reservationForm.timeFromLocalTime;
         reservationRequests.timeTo = reservationForm.timeToLocalTime;
         reservationRequests.reservationDate = reservationForm.dateLocalDate;
+        reservationRequests.boatFKID = null;
         reservationRequests.save();
 
-        return ok(views.html.showReservation.render(reservationForm));
+        return ok(views.html.showReservation.render(reservationForm, submitForm, request, messages.preferred(request), true));
     }
 
-    private Html renderIndexView(Http.Request request, Form form, boolean showReservation){
+    private Html renderIndexView(Http.Request request, Form<ReservationForm> form, boolean showReservation){
         return views.html.index.render(form, request, messages.preferred(request), showReservation);
     }
     public Result showReservation(Http.Request request){
         Form<ReservationForm> reservationForm = formFactory.form(ReservationForm.class);
         return ok(renderIndexView(request, reservationForm, true));
     }
-    public Result drinks(Http.Request request){
-        return ok(views.html.drinks.render());
-    }
-
-    public Result aboutUs(Http.Request request){
-        return ok(views.html.aboutUs.render());
-    }
 
     public Result manage(Http.Request request){
         Form<BoatManagement> boatManagementForm = formFactory.form(BoatManagement.class);
         boatManagementForm.withDirectFieldAccess(true);
-        return ok(views.html.manage.render(boatManagementForm, request, messages.preferred(request)));
+        return ok(views.html.manage.render(boatManagementForm, getNewReservationForm(), request, messages.preferred(request), true));
     }
 
     public Result submitBoatManagement(Http.Request request) throws FileNotFoundException{
@@ -88,10 +106,15 @@ public class HomeController extends Controller {
                 .form(BoatManagement.class)
                 .withDirectFieldAccess(true)
                 .bindFromRequest(request);
-
         if (submitBoatManagement.hasErrors()){
-            return badRequest(views.html.manage.render(submitBoatManagement, request, messages.preferred(request)));
+            return badRequest(views.html.manage.render(submitBoatManagement, getNewReservationForm(), request, messages.preferred(request), true));
         }
-        return ok(views.html.manage.render(submitBoatManagement, request, messages.preferred(request)));
+        return ok(views.html.manage.render(submitBoatManagement, getNewReservationForm(), request, messages.preferred(request), false));
+    }
+
+    private Form<ReservationForm> getNewReservationForm(){
+        Form<ReservationForm> reservationForm = formFactory.form(ReservationForm.class);
+        reservationForm.withDirectFieldAccess(true);
+        return reservationForm;
     }
 }

@@ -1,0 +1,18 @@
+@import views.html.templates.form
+@import forms.ReservationForm
+@import play.mvc.Http.Request
+
+@(reservationForm: Form[ReservationForm])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
+
+<header>
+        <a class="stickyHeader stickyHeaderTransition" href="@controllers.routes.HomeController.index()">
+        MAKO - BOAT RENTAL & SEA LOUNGE
+        </a>
+    <ul>
+        <li style="float: right"><a class="openButton stickyHeaderTransition" onclick="openForm()" >RESERVATION</a></li>
+        <li style="float: right"><a href="@controllers.routes.HomeController.drinks()" > DRINKS </a></li>
+        <li style="float: right"> <a href="@controllers.routes.HomeController.aboutUs()" > ABOUT US </a></li>
+        <li style="float: right"> <a href="@controllers.routes.HomeController.manage()" >MANAGE</a></li>
+    </ul>
+</header>
+@form(reservationForm)

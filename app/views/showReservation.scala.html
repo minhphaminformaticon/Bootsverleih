@@ -1,6 +1,10 @@
-@(reservationForm: forms.ReservationForm)
+@import views.html.templates.footer
+@import views.html.templates.header
+@import forms.ReservationForm
+@import play.mvc.Http.Request
+@(reservationForm: forms.ReservationForm, reservationForm2: Form[ReservationForm])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
 @main("Bootsverleih - MAKO") {
-    @header()
+    @header(reservationForm2)
         <h2 style="margin-left: 1%">Reservation Details</h2>
         <h1 style="text-align: center; color: white">🎉🎉🎉THANK YOU FOR THE RESERVATION🎉🎉🎉</h1>
         <div id="data" class="container" style="
@@ -27,31 +31,4 @@
         class="sharkImage" src="@routes.Assets.versioned("images/shark.gif")">
     @footer()
 }
-@header() = {
-    <header>
-        <h1>
-            Bootsverleih und Seelounge
-        </h1>
-        <ul>
-            <li><a style="float: right" href="@controllers.routes.HomeController.index()" class="openButton">HOME</a></li>
-        </ul>
-    </header>
-}
-@footer() ={
-    <footer>
-        <div>
-            <div class="footer-links">
-                <a href="@controllers.routes.HomeController.index()">Home</a>
-                <a href="@controllers.routes.HomeController.aboutUs()">About us</a>
-                <a href="@controllers.routes.HomeController.manage()">Manage Boats and Reservations</a>
-            </div>
 
-            <div class="footer-social-icons">
-                <a href="#" target="_blank">Facebook</a>
-                <a href="#" target="_blank">Twitter</a>
-                <a href="#" target="_blank">Instagram</a>
-            </div>
-        </div>
-        <p>&copy; 2024 MAKO. All rights reserved.</p>
-    </footer>
-}

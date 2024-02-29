@@ -1,10 +1,13 @@
+
+@import views.html.templates.header
+@import views.html.templates.footer
 @import forms.ReservationForm
 @import play.mvc.Http.Request
 
 @(reservationForm: Form[ReservationForm])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
-
 @main("Bootsverleih - MAKO") {
-  @header()
+    <script defer src="@routes.Assets.versioned("javascripts/index/index.js")" type="text/javascript"></script>
+  @header(reservationForm)
     <div class="animatedElement" style="transition:  0.6s ease-in-out; transform: translateY(50%);">
         <h1 style="font-size: 500%; margin-top: 20%;  text-decoration: underline;">WELCOME TO MAKO!</h1>
         <p style="color: #FCF4DE;">マコはサメで、他の魚を食べるので、あなたの娯楽のためにここにいます</p>
@@ -15,56 +18,6 @@
     <img class="bgImage" style="; height: auto; margin-top: 4%; width: 1000px; object-fit: cover;" src="@routes.Assets.versioned("images/Bootsverleih.png")" alt="background image">
     <p id="showReservation" style="display: none">@showReservation</p>
     </section>
-    <div class="form-popup" id="myForm">
-        <div class="form-container">
-            <h1 style="color: #333333">Reservation</h1>
-            @helper.form(routes.HomeController.submitReservation()){
-                @helper.inputText(
-                    reservationForm("firstName"),
-                    Symbol("_label") -> "first name",
-                    Symbol("_showConstraints") -> false
-                )
-                @helper.inputText(
-                    reservationForm("lastName"),
-                    Symbol("_label") -> "last name",
-                    Symbol("_showConstraints") -> false
-                )
-                @helper.inputDate(
-                    reservationForm("date"),
-                    Symbol("_label") -> "date",
-                    Symbol("_showConstraints") -> false
-                )
-                @helper.input(
-                    reservationForm("timeFrom"),
-                    Symbol("_label") -> "time from",
-                    Symbol("_showConstraints") -> false
-                ) { (id, name, value, args) =>
-                    <input  type="time" id="@id" value="@value" name= "@name" @toHtmlArgs(args)>
-                }
-                @helper.input(
-                    reservationForm("timeTo"),
-                    Symbol("_label") -> "time to",
-                    Symbol("_showConstraints") -> false
-                ){ (id, name, value, args) =>
-                    <input type="time" id="@id" value="@value" name= "@name" @toHtmlArgs(args)>
-                }
-                @helper.inputText(
-                    reservationForm("email"),
-                    Symbol("_label") -> "email",
-                    Symbol("_showConstraints") -> false
-                )
-                @helper.inputText(
-                    reservationForm("phone"),
-                    Symbol("_label") -> "number",
-                    Symbol("_showConstraints") -> false
-                )
-
-
-                <button class="btn" type="submit">Send</button>
-                <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-            }
-        </div>
-    </div>
     <section  class="hidden">
     <div class="flexContainer">
         <img class="images" src="@routes.Assets.versioned("images/sharkgang.png")">
@@ -165,44 +118,8 @@
         </div>
     </div>
     @footer()
-    <script>
-
-            function Scrolldown() {
-                window.scroll(0,300);
-            }
-
-            window.onload = Scrolldown;
-    </script>
 }
-@header() = {
-  <header>
-    <h1 class="stickyHeader stickyHeaderTransition">
-      MAKO - BOAT RENTAL & SEA LOUNGE
-    </h1>
-    <ul>
-      <li style="float: right"><a class="openButton" onclick="openForm()" >RESERVATION</a></li>
-      <li style="float: right"><a href="@controllers.routes.HomeController.drinks()" > DRINKS </a></li>
-      <li style="float: right"> <a href="@controllers.routes.HomeController.aboutUs()" > ABOUT US </a></li>
-        <li style="float: right"> <a href="@controllers.routes.HomeController.manage()" >MANAGE</a></li>
-    </ul>
-  </header>
-  }
-@footer() ={
-    <footer>
-            <div class="footer-links">
-                <a onclick="openForm()" >Reservation</a>
-                <a href="@controllers.routes.HomeController.aboutUs()">About us</a>
-                <a href="@controllers.routes.HomeController.manage()">Manage Boats and Reservations</a>
-            </div>
 
-            <div class="footer-social-icons">
-                <a href="#" target="_blank">Facebook</a>
-                <a href="#" target="_blank">Twitter</a>
-                <a href="#" target="_blank">Instagram</a>
-            </div>
-        <p class="copyRight">&copy; 2024 MAKO. All rights reserved.</p>
-    </footer>
-}
 
 
 

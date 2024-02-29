@@ -1,0 +1,60 @@
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+div .column {
+    float: left;
+    width: 18.0%;
+    margin-bottom: 16px;
+    padding: 0 8px;
+}
+
+
+
+div .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.container {
+    padding: 0 16px;
+}
+
+.container::after, .row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.title {
+    color: grey;
+}
+
+
+input[type=button] {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: darkgreen;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.4s;
+}
+
+.button:hover {
+    width: 105%;
+    background-color: red;
+    box-shadow: 0 0 50px 15px darkred;
+}
+
+td {
+    text-align: center;
+}
+table{
+    margin-top: 220px;
+}
+h2{
+    text-align: center;
+}

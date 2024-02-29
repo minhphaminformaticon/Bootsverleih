@@ -103,7 +103,7 @@ h4 {
 }
 
 header {
-    background: #333333;
+    background: none;
     padding-bottom: 30px;
 }
 ul {
@@ -116,6 +116,9 @@ ul {
     right: 0;
     width: 60%;
     z-index: 100;
+    background: none;
+    mix-blend-mode: difference;
+
 }
 
 li {
@@ -130,14 +133,13 @@ li a {
     padding: 2px 10px;
     text-decoration: none;
     font-family: gunsan, Serif;
-    background: #333333;
-    opacity: 30%;
+    opacity: 100%;
     transition: 0.4s;
     mix-blend-mode: difference;
+    z-index: 100;
 }
 
 li a:hover {
-    opacity: 100%;
     padding: 12px 18px;
     text-decoration: underline;
     transition: 0.4s;
@@ -160,10 +162,12 @@ a {
     text-align: center;
     text-decoration: none;
     font-family: gunsan, Serif;
-    background: #333333;
+    background: none;
     opacity: 30%;
     transition: 0.4s;
+    mix-blend-mode: difference;
 }
+
 
 b {
     padding: 20px;
@@ -196,11 +200,13 @@ html{
     mix-blend-mode: difference;
     padding: 10px;
     z-index: 100;
+    opacity: 100%;
+    background: none;
 }
 
 
 .stickyHeaderTransition {
-    transition: all 0.3s ease-in-out;
+    transition: 0.3ms;
 }
 .flexContainer {
     display: flex;
@@ -357,5 +363,30 @@ body {
 .showReservation{
     font-family: Serif;
 }
+    .teammemberrow {
+        display: flex;
+        margin-left: 23%;
+    }
+
+    .teammemberboxes {
+        width: 20%;
+        height: 50%;
+        min-height: 400px;
+        min-width: 300px;
+        border-radius: 100px;
+        margin: 3%;
+        background: dimgray;
+        text-align: center;
+        overflow: hidden;
+        position: relative;
+    }
+    .profile{
+        margin: 10%;
+        max-width: 70%;
+        border-radius: 50px;
+    }
+    .teammemberboxes:nth-child(2) {
+        top: 70px;
+    }
 
 }

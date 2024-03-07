@@ -74,10 +74,6 @@ public class HomeController extends Controller {
         }
         ReservationForm reservationForm = submitForm.get();
         ReservationRequests reservationRequests = new ReservationRequests();
-        reservationRequests.firstName = reservationForm.firstName;
-        reservationRequests.lastName = reservationForm.lastName;
-        reservationRequests.email = reservationForm.email;
-        reservationRequests.number = reservationForm.phone;
         reservationRequests.timeFrom = reservationForm.timeFromLocalTime;
         reservationRequests.timeTo = reservationForm.timeToLocalTime;
         reservationRequests.reservationDate = reservationForm.dateLocalDate;

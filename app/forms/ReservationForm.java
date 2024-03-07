@@ -9,19 +9,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 @Constraints.Validate
 public class ReservationForm implements Constraints.Validatable<List<ValidationError>> {
 
-    public String firstName;
-    public String lastName;
-    public String phone;
+
     public String date;
     public String timeFrom;
     public String timeTo;
-    public String email;
+
     public LocalTime timeFromLocalTime;
     public LocalTime timeToLocalTime;
     public LocalDate dateLocalDate;
@@ -33,12 +30,6 @@ public class ReservationForm implements Constraints.Validatable<List<ValidationE
 
 
         List<ValidationError> validationErrors = new ArrayList<>();
-        if (!firstName.matches("^[A-Za-zäöüÄÖÜ][a-zöäü]{3,20}")) {
-            validationErrors.add(new ValidationError("firstName", "the first name isn't valid"));
-        }
-        if (!lastName.matches("^[A-Za-zäöüÄÖÜ][a-zöäü]{3,20}")) {
-            validationErrors.add(new ValidationError("lastName", "the last name isn't valid"));
-        }
 
         if (date == null || Objects.equals(date, "")) {
             validationErrors.add(new ValidationError("date", "You need to enter a date"));
@@ -47,15 +38,6 @@ public class ReservationForm implements Constraints.Validatable<List<ValidationE
             if (dateLocalDate.isBefore(now)) {
                 validationErrors.add(new ValidationError("date", "The date is before the current date"));
             }
-        }
-        if (!phone.matches("^\\+\\d{11}$")) {
-            validationErrors.add(new ValidationError("phone", "The number isn't valid"));
-        }
-
-        Pattern mailPattern = Pattern.compile("\\S+@\\S+(\\.ch|\\.com)");
-        Matcher matcher = mailPattern.matcher(email);
-        if (!matcher.matches()) {
-            validationErrors.add(new ValidationError("email", "Email isn't valid"));
         }
 
         timeFromLocalTime = setTimeFromString(timeFrom);
@@ -106,29 +88,7 @@ public class ReservationForm implements Constraints.Validatable<List<ValidationE
         }
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 
     public String getDate() {
         return date;
@@ -154,13 +114,7 @@ public class ReservationForm implements Constraints.Validatable<List<ValidationE
         this.timeTo = timeTo;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public LocalTime getTimeFromLocalTime() {
         return timeFromLocalTime;

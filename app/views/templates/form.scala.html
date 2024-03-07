@@ -6,16 +6,6 @@
     <div class="form-container">
         <h1 style="color: #333333">Reservation</h1>
         @helper.form(routes.HomeController.submitReservation()){
-            @helper.inputText(
-                reservationForm("firstName"),
-                Symbol("_label") -> "first name",
-                Symbol("_showConstraints") -> false
-            )
-            @helper.inputText(
-                reservationForm("lastName"),
-                Symbol("_label") -> "last name",
-                Symbol("_showConstraints") -> false
-            )
             @helper.inputDate(
                 reservationForm("date"),
                 Symbol("_label") -> "date",
@@ -35,16 +25,6 @@
             ){ (id, name, value, args) =>
                 <input type="time" id="@id" value="@value" name= "@name" @toHtmlArgs(args)>
             }
-            @helper.inputText(
-                reservationForm("email"),
-                Symbol("_label") -> "email",
-                Symbol("_showConstraints") -> false
-            )
-            @helper.inputText(
-                reservationForm("phone"),
-                Symbol("_label") -> "number",
-                Symbol("_showConstraints") -> false
-            )
 
 
             <button class="btn" type="submit">Send</button>

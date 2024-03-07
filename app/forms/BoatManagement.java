@@ -25,7 +25,7 @@ public class BoatManagement implements Constraints.Validatable<List<ValidationEr
             validationErrors.add(new ValidationError("numberOfHorsePower", "You must enter the amount of Horsepower for your motor boat"));
         }
         if (Objects.equals(typeOfBoat, "Rowing Boat") && numberOfHorsePower != null){
-            validationErrors.add(new ValidationError("numberOfHorsePower", "A rowing boat can't have a motor.  "));
+            validationErrors.add(new ValidationError("numberOfHorsePower", "A rowing boat can't have a motor"));
         }
         if (Objects.equals(typeOfBoat, "Motor Boat") && numberOfSeats != null){
             validationErrors.add(new ValidationError("numberOfSeats", "A motor boat can't have multiple seats"));

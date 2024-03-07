@@ -1,3 +1,7 @@
+
+let myForm = "myForm";
+let login = "login";
+
 function methodForTime() {
     for (let hour = 0; hour < 24; hour++) {
         for (let minute = 0; minute < 60; minute += 15) {
@@ -29,30 +33,30 @@ const hiddenElements = document.querySelectorAll('.hidden');
 hiddenElements.forEach((el) => observer.observe(el));
 
 document.addEventListener("DOMContentLoaded", function(event) {
-    submitForm();
+    submitForm(nameForm);
 
 
 });
 
-function submitForm() {
+function submitForm(nameForm) {
     a = document.getElementById("showReservation").innerHTML;
     if (a === "true") {
-        document.getElementById("myForm").style.display = "block"
+        document.getElementById(nameForm).style.display = "block"
     }
 }
 
-function openForm() {
-    document.getElementById("myForm").style.display = "block";
+function openForm(nameForm) {
+    document.getElementById(nameForm).style.display = "block";
     setTimeout(function () {
         document.querySelector('.form-popup').style.transform = 'translate(-50%, -50%) scale(1)';
     }, 10);
     document.getElementById("notification1").style.display = "none";
 }
 
-function closeForm() {
+function closeForm(nameForm) {
     document.querySelector('.form-popup').style.transform = 'translate(-50%, -50%) scale(0)';
     setTimeout(function () {
-        document.getElementById("myForm").style.display = "none";
+        document.getElementById(nameForm).style.display = "none";
     }, 500);
 }
 document.addEventListener('DOMContentLoaded', function() {

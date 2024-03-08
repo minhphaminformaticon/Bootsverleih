@@ -1,25 +1,2 @@
-@import forms.Login
-@import play.mvc.Http.Request
-
-@(login: Form[Login])(implicit request: Request, messages: play.i18n.Messages)
-<div class="form-popup" id="login">
-    <div class="form-container">
-        <h1 style="color: #333333">LOGIN</h1>
-        @helper.form(routes.HomeController.submitReservation()){
-            @helper.inputText(
-                login("email"),
-                Symbol("_label") -> "email",
-                Symbol("_showConstraints") -> false
-            )
-            @helper.inputText(
-                login("phone"),
-                Symbol("_label") -> "number",
-                Symbol("_showConstraints") -> false
-            )
 
 
-            <button class="btn" type="submit">Send</button>
-            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-        }
-    </div>
-</div>

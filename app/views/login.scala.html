@@ -19,7 +19,7 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); ">
             <h1 style="color: #333333">LOGIN</h1>
-            @helper.form(routes.HomeController.submitReservation()){
+            @helper.form(routes.HomeController.submitLogin()){
                 @helper.inputText(
                     login("firstName"),
                     Symbol("_label") -> "first name",
@@ -40,7 +40,7 @@
                     Symbol("_label") -> "number",
                     Symbol("_showConstraints") -> false
                 )
-                <button class="btn" type="submit">Send</button>
+                <button class="btn" type="submit">Login</button>
             }
         </div>
     </body>

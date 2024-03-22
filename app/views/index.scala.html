@@ -13,12 +13,14 @@
         <p style="color: #FCF4DE;">マコはサメで、他の魚を食べるので、あなたの娯楽のためにここにいます</p>
         <img  style=" position: absolute; right: 5%; top: 10%" src="@routes.Assets.versioned("images/cuteShark2.png")">
         <img  style=" position: absolute; left: 5%; top: 10%" src="@routes.Assets.versioned("images/cuteShark.png")">
+        <div id="logoutmessage" class="show">You've been logged out</div>
     </div>
     <section class="hidden" style="min-height: 70vh">
     <img class="bgImage" style="; height: auto; margin-top: 4%; width: 1000px; object-fit: cover;" src="@routes.Assets.versioned("images/Bootsverleih.png")" alt="background image">
+
     <p id="showReservation" style="display: none">@showReservation</p>
     </section>
-    <section  class="hidden">
+    <section  style="min-height: 20vh" class="hidden">
     <div class="flexContainer">
         <img class="images" src="@routes.Assets.versioned("images/sharkgang.png")">
         <div class="title">

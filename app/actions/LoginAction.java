@@ -12,24 +12,14 @@ import java.util.concurrent.CompletionStage;
 
 public class LoginAction extends play.mvc.Action.Simple {
     public CompletionStage<Result> call(Http.Request req) {
-        System.out.println("Calling action for request: " + req);
-        System.out.println(req.session().get("test-cookie"));
+        System.out.println("Calling action for request: " + req.toString());
+        System.out.println(req.session().get("logged"));
+        Optional session = req.session().get("logged");
 
-
-        Http.Headers headers = req.getHeaders();
-        Optional<String> optReferer = headers.get("Referer");
-        if (optReferer.isPresent()) {
-            String value = optReferer.get();
-            String shortenedValue = value.substring(value.lastIndexOf("/"));
-            switch (shortenedValue) {
-                case "/drinks":
-                    return CompletableFuture.completedFuture(redirect(routes.HomeController.login()));
-                default:
-                    return delegate.call(req);
-            }
-
-        } else {
+        if(session.isPresent()){
             return delegate.call(req);
+        } else {
+            return CompletableFuture.completedFuture(redirect(routes.HomeController.login()).addingToSession(req, "desiredSite", req.toString()));
         }
     }
 }

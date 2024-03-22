@@ -1,9 +1,13 @@
 package controllers;
+import actions.LogInOrLogOut;
 import actions.LoginAction;
 import forms.BoatManagement;
 import forms.Login;
 import forms.ReservationForm;
+import io.ebeaninternal.server.util.Str;
+import models.BoatManagementTable;
 import models.ReservationRequests;
+import models.UserTable;
 import play.data.Form;
 import play.data.FormFactory;
 import play.i18n.MessagesApi;
@@ -40,21 +44,27 @@ public class HomeController extends Controller {
         return ok(renderIndexView(request, getNewReservationForm(), false)).addingToSession(request, "test-cookie", "egal");
     }
 
-    @With(LoginAction.class)
-    public Result drinks(Http.Request request){
-        return ok(views.html.drinks.render( getNewReservationForm(), request, messages.preferred(request), false));
+    public Result logOut(Http.Request request){
+        return redirect(routes.HomeController.index()).removingFromSession(request, "logged");
     }
 
+    @With(LoginAction.class)
+    public Result drinks(Http.Request request){
+        Form<ReservationForm> submitForm = formFactory
+                .form(ReservationForm.class)
+                .withDirectFieldAccess(true)
+                .bindFromRequest(request);
 
+        return ok(views.html.drinks.render( getNewReservationForm(), request, messages.preferred(request), true));
+    }
+
+    @With(LoginAction.class)
     public Result aboutUs(Http.Request request){
-        if (1 == 1) {
-            throw new RuntimeException("hallo");
-        }
         return ok(views.html.aboutUs.render( getNewReservationForm(), request, messages.preferred(request), false));
     }
 
 //    @Security.Authenticated
-    @With(LoginAction.class)
+
     public Result submitReservation(Http.Request request) throws FileNotFoundException {
         Form<ReservationForm> submitForm = formFactory
                 .form(ReservationForm.class)
@@ -70,10 +80,10 @@ public class HomeController extends Controller {
                 switch (shortenedValue) {
                     case "/drinks":
                         return badRequest(views.html.drinks.render(submitForm, request, messages.preferred(request), true));
-
                     case "/aboutUs":
                         return badRequest(views.html.aboutUs.render(submitForm, request, messages.preferred(request), true));
-
+                    case "/manage":
+                        return badRequest(views.html.manage.render(getBoatManagementForm(), submitForm, request, messages.preferred(request), true));
                     default:
                         return badRequest(renderIndexView(request, submitForm, true));
                 }
@@ -100,15 +110,17 @@ public class HomeController extends Controller {
         Form<ReservationForm> reservationForm = formFactory.form(ReservationForm.class);
         return ok(renderIndexView(request, reservationForm, true));
     }
-
+    @With(LoginAction.class)
     public Result manage(Http.Request request){
         Form<BoatManagement> boatManagementForm = formFactory.form(BoatManagement.class);
         boatManagementForm.withDirectFieldAccess(true);
         return ok(views.html.manage.render(boatManagementForm, getNewReservationForm(), request, messages.preferred(request), true));
     }
+
     public Result login(Http.Request request){
         Form<Login> loginForm = formFactory.form(Login.class);
         loginForm.withDirectFieldAccess(true);
+        System.out.println(request.session().get("desiredSite"));
         return ok(views.html.login.render(loginForm, request, messages.preferred(request)));
     }
     public Result submitBoatManagement(Http.Request request) throws FileNotFoundException{
@@ -116,6 +128,12 @@ public class HomeController extends Controller {
                 .form(BoatManagement.class)
                 .withDirectFieldAccess(true)
                 .bindFromRequest(request);
+        BoatManagement boatManagement = submitBoatManagement.get();
+        BoatManagementTable boatManagementTable = new BoatManagementTable();
+
+        boatManagementTable.typeOfBoat = boatManagement.typeOfBoat;
+        boatManagementTable.horsePower = boatManagement.numberOfHorsePower;
+        boatManagementTable.numberOfSeats = boatManagement.numberOfSeats;
         if (submitBoatManagement.hasErrors()){
             return badRequest(views.html.manage.render(submitBoatManagement, getNewReservationForm(), request, messages.preferred(request), true));
         }
@@ -123,20 +141,50 @@ public class HomeController extends Controller {
     }
 
     public Result submitLogin(Http.Request request) throws FileNotFoundException{
-        // TODO
-        Form<BoatManagement> submitBoatManagement = formFactory
-                .form(BoatManagement.class)
+        Form<Login> loginForm = formFactory
+                .form(Login.class)
                 .withDirectFieldAccess(true)
                 .bindFromRequest(request);
-        if (submitBoatManagement.hasErrors()){
-            return badRequest(views.html.manage.render(submitBoatManagement, getNewReservationForm(), request, messages.preferred(request), true));
+
+        Login loginData = loginForm.get();
+        if (loginForm.hasErrors()){
+            return badRequest(views.html.login.render(loginForm, request, messages.preferred(request)));
         }
-        return ok(views.html.manage.render(submitBoatManagement, getNewReservationForm(), request, messages.preferred(request), false));
+        UserTable userTable = new UserTable();
+        userTable.firstName = loginData.firstName;
+        userTable.lastName = loginData.lastName;
+        userTable.email = loginData.email;
+        userTable.number = loginData.phone;
+        System.out.println(request.session().get("desiredSite"));
+        String value = String.valueOf(request.session().get("desiredSite"));
+        String shortenValue = value.substring(value.lastIndexOf("/"));
+        switch (shortenValue) {
+            case "/drinks]":
+                return ok(views.html.drinks.render(getNewReservationForm(), request, messages.preferred(request), false))
+                        .addingToSession(request, "logged", "hallo" );
+            case "/aboutUs]":
+                return ok(views.html.aboutUs.render(getNewReservationForm(), request, messages.preferred(request), false))
+                        .addingToSession(request, "logged", "hallo" );
+            case "/manage]":
+                return ok(views.html.manage.render(getBoatManagementForm(), getNewReservationForm(), request, messages.preferred(request), false))
+                        .addingToSession(request, "logged", "hallo" );
+            default:
+                return ok(views.html.loginConfirmed.render(loginData, getNewReservationForm(), request, messages.preferred(request), false))
+                        .addingToSession(request, "logged", "hallo" );
+        }
+
     }
+
+    //helper methods
 
     private Form<ReservationForm> getNewReservationForm(){
         Form<ReservationForm> reservationForm = formFactory.form(ReservationForm.class);
         reservationForm.withDirectFieldAccess(true);
         return reservationForm;
+    }
+    private Form<BoatManagement> getBoatManagementForm(){
+        Form<BoatManagement> boatManagementForm = formFactory.form(BoatManagement.class);
+        boatManagementForm.withDirectFieldAccess(true);
+        return boatManagementForm;
     }
 }

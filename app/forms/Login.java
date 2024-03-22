@@ -5,6 +5,7 @@ import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,18 +21,26 @@ public class Login implements Constraints.Validatable<List<ValidationError>>{
     public List<ValidationError> validate() {
 
         List<ValidationError> validationErrors = new ArrayList<>();
-        if (!firstName.matches("^[A-Za-zäöüÄÖÜ][a-zöäü]{3,20}")) {
+        if (firstName == null || Objects.equals(firstName, "")) {
+            validationErrors.add(new ValidationError("firstName", "you need to enter your first name"));
+        } else if (!firstName.matches("^[A-Za-zäöüÄÖÜ][a-zöäü]{3,20}")) {
             validationErrors.add(new ValidationError("firstName", "the first name isn't valid"));
         }
-        if (!lastName.matches("^[A-Za-zäöüÄÖÜ][a-zöäü]{3,20}")) {
+        if (lastName == null || Objects.equals(lastName, "")) {
+            validationErrors.add(new ValidationError("lastName", "you need to enter your last name"));
+        } else if (!lastName.matches("^[A-Za-zäöüÄÖÜ][a-zöäü]{3,20}")) {
             validationErrors.add(new ValidationError("lastName", "the last name isn't valid"));
         }
         Pattern mailPattern = Pattern.compile("\\S+@\\S+(\\.ch|\\.com)");
         Matcher matcher = mailPattern.matcher(email);
-        if (!matcher.matches()) {
+        if (email == null || Objects.equals(email, "")){
+            validationErrors.add(new ValidationError("email", "you need to enter your email"));
+        } else if (!matcher.matches()) {
             validationErrors.add(new ValidationError("email", "Email isn't valid"));
         }
-        if (!phone.matches("^\\+\\d{11}$")) {
+        if (phone == null || Objects.equals(phone, "")){
+            validationErrors.add(new ValidationError("phone", "you need to enter your number"));
+        } else if (!phone.matches("^\\+\\d{11}$")) {
             validationErrors.add(new ValidationError("phone", "The number isn't valid"));
         }
 

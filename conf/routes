@@ -12,7 +12,7 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 POST    /reservation                controllers.HomeController.submitReservation(request: Request)
 +nocsrf
 POST    /manage                     controllers.HomeController.submitBoatManagement(request: Request)
-
++nocsrf
 POST    /login                      controllers.HomeController.submitLogin(request: Request)
 
 GET     /reservation                controllers.HomeController.showReservation(request: Request)
@@ -24,6 +24,8 @@ GET     /aboutUs                    controllers.HomeController.aboutUs(request: 
 GET     /manage                     controllers.HomeController.manage(request: Request)
 
 GET     /login                      controllers.HomeController.login(request: Request)
+
+GET     /logout                     controllers.HomeController.logOut(request: Request)
 
 
 

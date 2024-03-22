@@ -1,6 +1,5 @@
 
-let myForm = "myForm";
-let login = "login";
+
 
 function methodForTime() {
     for (let hour = 0; hour < 24; hour++) {
@@ -33,30 +32,30 @@ const hiddenElements = document.querySelectorAll('.hidden');
 hiddenElements.forEach((el) => observer.observe(el));
 
 document.addEventListener("DOMContentLoaded", function(event) {
-    submitForm(nameForm);
+    submitForm();
 
 
 });
 
-function submitForm(nameForm) {
+function submitForm() {
     a = document.getElementById("showReservation").innerHTML;
     if (a === "true") {
-        document.getElementById(nameForm).style.display = "block"
+        document.getElementById("myForm").style.display = "block"
     }
 }
 
-function openForm(nameForm) {
-    document.getElementById(nameForm).style.display = "block";
+function openForm() {
+    document.getElementById("myForm").style.display = "block";
     setTimeout(function () {
         document.querySelector('.form-popup').style.transform = 'translate(-50%, -50%) scale(1)';
     }, 10);
     document.getElementById("notification1").style.display = "none";
 }
 
-function closeForm(nameForm) {
+function closeForm() {
     document.querySelector('.form-popup').style.transform = 'translate(-50%, -50%) scale(0)';
     setTimeout(function () {
-        document.getElementById(nameForm).style.display = "none";
+        document.getElementById("myForm").style.display = "none";
     }, 500);
 }
 document.addEventListener('DOMContentLoaded', function() {
@@ -77,6 +76,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+function logout(){
+    var x = document.getElementById("logoutmessage");
+
+    x.className = "show";
+
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
 
 
 

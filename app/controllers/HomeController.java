@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -55,7 +56,7 @@ public class HomeController extends Controller {
                 .withDirectFieldAccess(true)
                 .bindFromRequest(request);
 
-        return ok(views.html.drinks.render( getNewReservationForm(), request, messages.preferred(request), true));
+        return ok(views.html.drinks.render( getNewReservationForm(), request, messages.preferred(request), false));
     }
 
     @With(LoginAction.class)
@@ -160,8 +161,7 @@ public class HomeController extends Controller {
         String shortenValue = value.substring(value.lastIndexOf("/"));
         switch (shortenValue) {
             case "/drinks]":
-                return ok(views.html.drinks.render(getNewReservationForm(), request, messages.preferred(request), false))
-                        .addingToSession(request, "logged", "hallo" );
+                return redirect(routes.HomeController.drinks()).addingToSession(request, "logged", "hallo");
             case "/aboutUs]":
                 return ok(views.html.aboutUs.render(getNewReservationForm(), request, messages.preferred(request), false))
                         .addingToSession(request, "logged", "hallo" );

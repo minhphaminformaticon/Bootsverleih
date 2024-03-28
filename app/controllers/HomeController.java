@@ -43,28 +43,6 @@ public class HomeController extends Controller {
     public Result index(Http.Request request) {
         return ok(renderIndexView(request, getNewReservationForm(), false)).addingToSession(request, "test-cookie", "egal");
     }
-
-    public Result logOut(Http.Request request){
-        return redirect(routes.HomeController.index()).removingFromSession(request, "logged");
-    }
-
-    @With(LoginAction.class)
-    public Result drinks(Http.Request request){
-        Form<ReservationForm> submitForm = formFactory
-                .form(ReservationForm.class)
-                .withDirectFieldAccess(true)
-                .bindFromRequest(request);
-
-        return ok(views.html.drinks.render( getNewReservationForm(), request, messages.preferred(request), true));
-    }
-
-    @With(LoginAction.class)
-    public Result aboutUs(Http.Request request){
-        return ok(views.html.aboutUs.render( getNewReservationForm(), request, messages.preferred(request), false));
-    }
-
-//    @Security.Authenticated
-
     public Result submitReservation(Http.Request request) throws FileNotFoundException {
         Form<ReservationForm> submitForm = formFactory
                 .form(ReservationForm.class)
@@ -103,40 +81,21 @@ public class HomeController extends Controller {
         return ok(views.html.showReservation.render(reservationForm, submitForm, request, messages.preferred(request), true));
     }
 
-    private Html renderIndexView(Http.Request request, Form<ReservationForm> form, boolean showReservation){
-        return views.html.index.render(form, request, messages.preferred(request), showReservation);
-    }
-    public Result showReservation(Http.Request request){
-        Form<ReservationForm> reservationForm = formFactory.form(ReservationForm.class);
-        return ok(renderIndexView(request, reservationForm, true));
-    }
-    @With(LoginAction.class)
-    public Result manage(Http.Request request){
-        Form<BoatManagement> boatManagementForm = formFactory.form(BoatManagement.class);
-        boatManagementForm.withDirectFieldAccess(true);
-        return ok(views.html.manage.render(boatManagementForm, getNewReservationForm(), request, messages.preferred(request), true));
-    }
-
-    public Result login(Http.Request request){
-        Form<Login> loginForm = formFactory.form(Login.class);
-        loginForm.withDirectFieldAccess(true);
-        System.out.println(request.session().get("desiredSite"));
-        return ok(views.html.login.render(loginForm, request, messages.preferred(request)));
-    }
     public Result submitBoatManagement(Http.Request request) throws FileNotFoundException{
         Form<BoatManagement> submitBoatManagement = formFactory
                 .form(BoatManagement.class)
                 .withDirectFieldAccess(true)
                 .bindFromRequest(request);
+
+        if (submitBoatManagement.hasErrors()){
+            return badRequest(views.html.manage.render(submitBoatManagement, getNewReservationForm(), request, messages.preferred(request), true));
+        }
         BoatManagement boatManagement = submitBoatManagement.get();
         BoatManagementTable boatManagementTable = new BoatManagementTable();
 
         boatManagementTable.typeOfBoat = boatManagement.typeOfBoat;
         boatManagementTable.horsePower = boatManagement.numberOfHorsePower;
         boatManagementTable.numberOfSeats = boatManagement.numberOfSeats;
-        if (submitBoatManagement.hasErrors()){
-            return badRequest(views.html.manage.render(submitBoatManagement, getNewReservationForm(), request, messages.preferred(request), true));
-        }
         return ok(views.html.manage.render(submitBoatManagement, getNewReservationForm(), request, messages.preferred(request), false));
     }
 
@@ -146,10 +105,11 @@ public class HomeController extends Controller {
                 .withDirectFieldAccess(true)
                 .bindFromRequest(request);
 
-        Login loginData = loginForm.get();
+
         if (loginForm.hasErrors()){
             return badRequest(views.html.login.render(loginForm, request, messages.preferred(request)));
         }
+        Login loginData = loginForm.get();
         UserTable userTable = new UserTable();
         userTable.firstName = loginData.firstName;
         userTable.lastName = loginData.lastName;
@@ -174,9 +134,49 @@ public class HomeController extends Controller {
         }
 
     }
+    public Result showReservation(Http.Request request){
+        Form<ReservationForm> reservationForm = formFactory.form(ReservationForm.class);
+        return ok(renderIndexView(request, reservationForm, true));
+    }
+
+    @With(LoginAction.class)
+    public Result drinks(Http.Request request){
+        Form<ReservationForm> submitForm = formFactory
+                .form(ReservationForm.class)
+                .withDirectFieldAccess(true)
+                .bindFromRequest(request);
+
+        return ok(views.html.drinks.render( getNewReservationForm(), request, messages.preferred(request), true));
+    }
+
+    @With(LoginAction.class)
+    public Result aboutUs(Http.Request request){
+        return ok(views.html.aboutUs.render( getNewReservationForm(), request, messages.preferred(request), false));
+    }
+
+    @With(LoginAction.class)
+    public Result manage(Http.Request request){
+        Form<BoatManagement> boatManagementForm = formFactory.form(BoatManagement.class);
+        boatManagementForm.withDirectFieldAccess(true);
+        return ok(views.html.manage.render(boatManagementForm, getNewReservationForm(), request, messages.preferred(request), true));
+    }
+
+
+
+    public Result login(Http.Request request){
+        Form<Login> loginForm = formFactory.form(Login.class);
+        loginForm.withDirectFieldAccess(true);
+        System.out.println(request.session().get("desiredSite"));
+        return ok(views.html.login.render(loginForm, request, messages.preferred(request)));
+    }
+    public Result logOut(Http.Request request){
+        return redirect(routes.HomeController.index()).removingFromSession(request, "logged");
+    }
 
     //helper methods
-
+    private Html renderIndexView(Http.Request request, Form<ReservationForm> form, boolean showReservation){
+        return views.html.index.render(form, request, messages.preferred(request), showReservation);
+    }
     private Form<ReservationForm> getNewReservationForm(){
         Form<ReservationForm> reservationForm = formFactory.form(ReservationForm.class);
         reservationForm.withDirectFieldAccess(true);

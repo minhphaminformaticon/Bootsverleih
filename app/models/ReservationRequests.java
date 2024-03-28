@@ -14,20 +14,23 @@ import java.time.LocalTime;
 public class ReservationRequests extends Model {
 
     @Id
-    @Column(name = "customer_ID")
+    @Column(name = "id")
     public int id;
 
-    @Column(name = "time_from")
+    @Column(name = "timefrom")
     public LocalTime timeFrom;
 
-    @Column(name = "time_to")
+    @Column(name = "timeto")
     public LocalTime timeTo;
 
-    @Column(name = "reservation_date")
+    @Column(name = "reservationdate")
     public LocalDate reservationDate;
 
-    @Column(name = "boat_FKID")
+    @Column(name = "fk_boat_id")
     public Integer boatFKID;
+
+    @Column(name = "fk_customer_id")
+    public Integer customerFKID;
 }
 
 

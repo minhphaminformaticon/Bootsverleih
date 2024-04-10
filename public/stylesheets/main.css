@@ -405,11 +405,6 @@ body {
         left: 50%;
         bottom: 30px;
     }
-    #logoutmessage.show{
-        visibility: visible;
-        -webkit-animation: fadein 0.5s,fadeout 0.5s 2.5s;
-        animation: fadein 0.5s,fadeout 0.5s 2.5s;
-    }
     @-webkit-keyframes fadein {
         from {bottom: 0; opacity: 0;}
         to {bottom: 30px; opacity: 1;}
@@ -429,4 +424,107 @@ body {
         from {bottom: 30px; opacity: 1;}
         to {bottom: 0; opacity: 0;}
     }
+    .button2 {
+        display: inline-block;
+        padding: 10px 20px;
+        width: 50px;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+        position: absolute;
+        left: 49%;
+    }
+
+    .button2:hover {
+        background-color: #45a049;
+    }
+
+    .button2:active {
+        background-color: #3e8e41;
+    }
+    }
+section.horizontal {
+    overflow-x: hidden;
+}
+
+section.horizontal .pin-wrap,
+section.horizontal .animation-wrap {
+    display: flex;
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+}
+
+
+section.horizontal .item {
+    position: relative;
+    padding: 150px 80px;
+    flex: 0 0 500px;
+    display: flex;
+    align-items: center;
+    line-height: 1.7;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-right: 1px solid rgba(0, 0, 0, 0.06);
+    background-color: transparent;
+}
+
+section.horizontal .item:before {
+    position: absolute;
+    font-size: 100px;
+    opacity: .13;
+    font-weight: bold;
+    z-index: -1;
+    -webkit-transform: translate(-30px, -50px);
+    transform: translate(-30px, -50px);
+    line-height: 1;
+}
+
+
+
+
+section.horizontal .animation-wrap.to-right {
+    counter-reset: item;
+    float: left;
+}
+
+section.horizontal .animation-wrap.to-left {
+    counter-reset: item 11;
+    float: right;
+}
+
+section.horizontal .animation-wrap.to-right .item:before {
+    counter-increment: item;
+    content: counter(item);
+}
+
+section.horizontal .animation-wrap.to-left .item:before {
+    counter-increment: item -1;
+    content: counter(item);
+}
+
+
+
+section.horizontal .animation-wrap .item:nth-child(2n+2) {
+    align-items: flex-start;
+}
+
+section.horizontal .animation-wrap .item:nth-child(4n+4) {
+    align-items: flex-end;
+}
+
+.item {
+    font-family: "sans-serif" ;
+}
+
+td.boatData {
+    color: #333333;
+    font-family: sans-serif;
+    text-align: center;
 }

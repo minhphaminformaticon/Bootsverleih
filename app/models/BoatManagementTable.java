@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class BoatManagementTable extends Model {
 
     @Id
-    @Column(name ="boat_ID")
+    @Column(name ="id")
     public int boatID;
 
     @Column(name = "type_of_boat")

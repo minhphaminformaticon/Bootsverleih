@@ -5,10 +5,10 @@ CREATE TABLE user(
     firstname VARCHAR(255),
     lastname VARCHAR(255),
     email VARCHAR(255),
-    password VARCHAR(255)
+    phone CHAR(12)
 );
 
-INSERT INTO user (firstname, lastname, email, password)
+INSERT INTO user (firstname, lastname, email, phone)
 VALUES
 ('John', 'Doe', 'john@example.com', 'password123'),
 ('Jane', 'Smith', 'jane@example.com', 'securepassword'),

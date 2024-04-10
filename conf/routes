@@ -14,6 +14,8 @@ POST    /reservation                controllers.HomeController.submitReservation
 POST    /manage                     controllers.HomeController.submitBoatManagement(request: Request)
 +nocsrf
 POST    /login                      controllers.HomeController.submitLogin(request: Request)
++nocsrf
+POST    /manage/boatconfiguration   controllers.HomeController.submitBoatConfiguration(request: Request)
 
 GET     /reservation                controllers.HomeController.showReservation(request: Request)
 
@@ -26,6 +28,8 @@ GET     /manage                     controllers.HomeController.manage(request: R
 GET     /login                      controllers.HomeController.login(request: Request)
 
 GET     /logout                     controllers.HomeController.logOut(request: Request)
+
+GET     /manage/boatconfiguration   controllers.HomeController.addingBoat(request: Request)
 
 
 

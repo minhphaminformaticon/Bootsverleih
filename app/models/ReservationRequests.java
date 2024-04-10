@@ -1,7 +1,6 @@
 package models;
 
 import io.ebean.Model;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "reservationsrequests")
+@Table(name = "reservationrequests")
 public class ReservationRequests extends Model {
 
     @Id

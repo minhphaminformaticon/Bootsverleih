@@ -4,14 +4,45 @@
 @import play.mvc.Http.Request
 @import views.html.helper.options
 @import forms.ReservationForm
+@import models.view.BoatTableViewAdapter
 
-@(boatManagement: Form[BoatManagement], reservationForm2: Form[ReservationForm])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
+
+@(boatTableViewAdapterList: List[BoatTableViewAdapter], boatManagement: Form[BoatManagement], reservationForm2: Form[ReservationForm], loginIcon: String)(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
 @main("Bootsverleih - MAKO"){
-    @header(reservationForm2)
-    <section style="margin-top: 20%; min-height: 70vh">
+
+    @header(reservationForm2, loginIcon)
+    <section style="margin-top: 20%; min-height: 50vh">
         <div>
             <h2 style="text-align: center">BOAT LIST</h2>
         </div>
+        <div style=" width: 60%;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        ">
+
+            @if(boatTableViewAdapterList.isEmpty) {
+                <p style="font-family: sans-serif">No boats available</p>
+            } else {
+                <table>
+                <tr>
+                    <td class="boatData">Boat Model</td>
+                    <td class="boatData">Vehicle License Plate</td>
+                </tr>
+                @for(data <- boatTableViewAdapterList) {
+                    <tr>
+                        <td class="boatData">@data.model</td>
+                        <td class="boatData">@data.vehicleLicensePlate</td>
+                    </tr>
+                }
+                </table>
+            }
+        </div>
+            <a href="@controllers.routes.HomeController.addingBoat()" class="button2">+</a>
     </section>
     <section style="min-height: 70vh">
         <div style="left: 43%;
@@ -46,6 +77,9 @@
                 }
                 <button class="btn" type="submit">
                     Send
+                </button>
+                <button class="btn" type="reset">
+                    Reset
                 </button>
             }
 

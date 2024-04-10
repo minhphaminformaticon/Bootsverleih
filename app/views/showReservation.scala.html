@@ -2,10 +2,11 @@
 @import views.html.templates.header
 @import forms.ReservationForm
 @import play.mvc.Http.Request
-@(reservationForm: forms.ReservationForm, reservationForm2: Form[ReservationForm])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
+@(reservationForm: forms.ReservationForm, reservationForm2: Form[ReservationForm], loginIcon: String)(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
 @main("Bootsverleih - MAKO") {
-    @header(reservationForm2)
-        <h2 style="margin-left: 1%">Reservation Details</h2>
+    @header(reservationForm2, loginIcon)
+    <section style="min-height: 20vh"></section>
+        <h2 style="text-align: center">Reservation Details</h2>
         <h1 style="text-align: center; color: white">🎉🎉🎉THANK YOU FOR THE RESERVATION🎉🎉🎉</h1>
         <div id="data" class="container" style="
             width: 80%;
@@ -19,12 +20,13 @@
             ">
            <p class="showReservation">Time: @reservationForm.timeFrom - @reservationForm.timeTo</p>
             <p class="showReservation">Date: @reservationForm.date</p>
-     </div>
+        </div>
     <img  style="width: 20%;
         display: block;
         margin-left: auto;
         margin-right: auto;"
         class="sharkImage" src="@routes.Assets.versioned("images/shark.gif")">
+    <section style="min-height: 50vh"></section>
     @footer()
 }
 

@@ -5,8 +5,8 @@ CREATE TABLE  reservationrequests(
     timefrom TIME NOT NULL,
     timeto TIME NOT NULL,
     reservationdate DATE NOT NULL,
-    fk_boat_id INT NOT NULL,
-    fk_customer_id INT NOT NULL,
+    fk_boat_id INT,
+    fk_customer_id INT,
     FOREIGN KEY (fk_boat_id) REFERENCES boat(id),
     FOREIGN KEY (fk_customer_id) REFERENCES user(id)
 );

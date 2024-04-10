@@ -5,7 +5,7 @@ CREATE TABLE boat_management(
     type_of_boat VARCHAR(255),
     number_of_seats INT UNSIGNED,
     horse_power INT UNSIGNED,
-    fk_boat_id INT NOT NULL,
+    fk_boat_id INT,
     FOREIGN KEY (fk_boat_id) REFERENCES boat(id)
 );
 

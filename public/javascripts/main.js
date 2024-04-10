@@ -78,12 +78,17 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function logout(){
-    var x = document.getElementById("logoutmessage");
+    var logoutMessage = document.getElementById('logoutmessage');
 
-    x.className = "show";
+    logoutMessage.classList.remove('hidden');
+    logoutMessage.classList.add('show');
 
-    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    setTimeout(function() {
+        logoutMessage.classList.remove('show');
+        logoutMessage.classList.add('hidden');
+    }, 2400);
 }
+
 
 
 

@@ -12,19 +12,19 @@ import javax.persistence.Table;
 public class UserTable extends Model {
 
     @Id
-    @Column(name ="userID")
+    @Column(name ="id")
     public int userID;
 
-    @Column(name = "first_name")
+    @Column(name = "firstname")
     public String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "lastname")
     public String lastName;
 
     @Column(name = "email")
     public String email;
 
-    @Column(name = "number")
+    @Column(name = "phone")
     public String number;
 
 }

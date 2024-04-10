@@ -2,18 +2,29 @@
 @import forms.ReservationForm
 @import play.mvc.Http.Request
 
-@(reservationForm: Form[ReservationForm])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
-
+@(reservationForm: Form[ReservationForm], loginIcon: String)(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
 <header>
         <a class="stickyHeader stickyHeaderTransition" href="@controllers.routes.HomeController.index()">
         MAKO - BOAT RENTAL & SEA LOUNGE
         </a>
     <ul>
-        <li style="float: right"><a href="@controllers.routes.HomeController.logOut()"  onclick="logout()" id="loginIcon">🏃</a></li>
+        <li style="float: right" class="logout"><a href="@controllers.routes.HomeController.logOut()"  onclick="logout()" id="loginIcon">@loginIcon</a></li>
+@*        <div class="hide">log out? log out? log out? log out? log out? log out?</div>*@
         <li style="float: right"><a class="openButton stickyHeaderTransition" onclick="openForm()" >RESERVATION</a></li>
         <li style="float: right"><a href="@controllers.routes.HomeController.drinks()" > DRINKS </a></li>
         <li style="float: right"> <a href="@controllers.routes.HomeController.aboutUs()" > ABOUT US </a></li>
         <li style="float: right"> <a href="@controllers.routes.HomeController.manage()" >MANAGE</a></li>
     </ul>
+
 </header>
+<style>
+        .hide {
+            display: none;
+        }
+
+        .logout:hover + .hide {
+            display: block;
+            color: wheat;
+        }
+</style>
 @form(reservationForm)

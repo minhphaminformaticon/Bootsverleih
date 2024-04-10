@@ -15,7 +15,6 @@ public class LoginAction extends play.mvc.Action.Simple {
         System.out.println("Calling action for request: " + req.toString());
         System.out.println(req.session().get("logged"));
         Optional session = req.session().get("logged");
-
         if(session.isPresent()){
             return delegate.call(req);
         } else {

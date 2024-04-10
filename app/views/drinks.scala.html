@@ -2,10 +2,10 @@
 @import views.html.templates.footer
 @import play.mvc.Http.Request
 @import forms.ReservationForm
-@(reservationForm: Form[ReservationForm])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
+@(reservationForm: Form[ReservationForm], loginIcon: String)(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
 @main("Bootsverleih - MAKO"){
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/drinks/drinks.css")">
-    @header(reservationForm)
+    @header(reservationForm, loginIcon)
     <p id="showReservation" style="display: none">@showReservation</p>
     <div class="row">
         <div class="column">
@@ -14,100 +14,203 @@
                 <div class="container">
                     <h2>Coca Cola</h2>
                     <p></p>
-                    <p><input type="button" value="4.00.-" class="button"></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
                 </div>
             </div>
         </div>
         <div class="column">
             <div class="card">
-                <img src="@routes.Assets.versioned("images/colaCola.png")" alt="Cola" style="width:100%">
+                <img src="@routes.Assets.versioned("images/spritecan.jpg")" alt="Sprite" style="width:100%">
                 <div class="container">
-                    <h2>Coca Cola</h2>
+                    <h2>Sprite</h2>
                     <p></p>
-                    <p><input type="button" value="4.00.-" class="button"></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
                 </div>
             </div>
         </div>
         <div class="column">
             <div class="card">
-                <img src="@routes.Assets.versioned("images/colaCola.png")" alt="Cola" style="width:100%">
+                <img src="@routes.Assets.versioned("images/arizona.jpg")" alt="Arizona" style="width:100%">
                 <div class="container">
-                    <h2>Coca Cola</h2>
+                    <h2>Arizona Green Tea</h2>
                     <p></p>
-                    <p><input type="button" value="4.00.-" class="button"></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
                 </div>
             </div>
         </div>
         <div class="column">
             <div class="card">
-                <img src="@routes.Assets.versioned("images/colaCola.png")" alt="Cola" style="width:100%">
+                <img src="@routes.Assets.versioned("images/arizonablacktea.jpg")" alt="Arizona Black Tea" style="width:100%">
                 <div class="container">
-                    <h2>Coca Cola</h2>
+                    <h2>Arizona Black Tea</h2>
                     <p></p>
-                    <p><input type="button" value="4.00.-" class="button"></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
                 </div>
             </div>
         </div>
         <div class="column">
             <div class="card">
-                <img src="@routes.Assets.versioned("images/colaCola.png")" alt="Cola" style="width:100%">
+                <img src="@routes.Assets.versioned("images/liptonpeach.jpg")" alt="Lipton Peach" style="width:100%">
                 <div class="container">
-                    <h2>Coca Cola</h2>
+                    <h2>Lipton Peach Ice Tea</h2>
                     <p></p>
-                    <p><input type="button" value="4.00.-" class="button"></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-
         <div class="column">
             <div class="card">
-                <img src="@routes.Assets.versioned("images/colaCola.png")" alt="Cola" style="width:100%">
+                <img src="@routes.Assets.versioned("images/liptonlemon.jpg")" alt="Lipton Lemon" style="width:100%">
                 <div class="container">
-                    <h2>Coca Cola</h2>
+                    <h2>Lipton Lemon Ice Tea</h2>
                     <p></p>
-                    <p><input type="button" value="4.00.-" class="button"></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
                 </div>
             </div>
         </div>
         <div class="column">
             <div class="card">
-                <img src="@routes.Assets.versioned("images/colaCola.png")" alt="Cola" style="width:100%">
+                <img src="@routes.Assets.versioned("images/eltonymathe.png")" alt="El Tony mate" style="width:100%">
                 <div class="container">
-                    <h2>Coca Cola</h2>
+                    <h2>El Tony Mate</h2>
                     <p></p>
-                    <p><input type="button" value="4.00.-" class="button"></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
                 </div>
             </div>
         </div>
         <div class="column">
             <div class="card">
-                <img src="@routes.Assets.versioned("images/colaCola.png")" alt="Cola" style="width:100%">
+                <img src="@routes.Assets.versioned("images/eltonymateginger.jpg")" alt="El Tony Mate Ginger" style="width:100%">
                 <div class="container">
-                    <h2>Coca Cola</h2>
+                    <h2>El Tony Mate Ginger</h2>
                     <p></p>
-                    <p><input type="button" value="4.00.-" class="button"></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
                 </div>
             </div>
         </div>
         <div class="column">
             <div class="card">
-                <img src="@routes.Assets.versioned("images/colaCola.png")" alt="Cola" style="width:100%">
+                <img src="@routes.Assets.versioned("images/eltonymatemint.jpg")" alt="El Tony Mate Mint" style="width:100%">
                 <div class="container">
-                    <h2>Coca Cola</h2>
+                    <h2>El Tony Mate Mint</h2>
                     <p></p>
-                    <p><input type="button" value="4.00.-" class="button"></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
                 </div>
             </div>
         </div>
         <div class="column">
             <div class="card">
-                <img src="@routes.Assets.versioned("images/colaCola.png")" alt="Cola" style="width:100%">
+                <img src="@routes.Assets.versioned("images/fanta.jpg")" alt="Fanta" style="width:100%">
                 <div class="container">
-                    <h2>Coca Cola</h2>
+                    <h2>Fanta</h2>
                     <p></p>
-                    <p><input type="button" value="4.00.-" class="button"></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="card">
+                <img src="@routes.Assets.versioned("images/moguLychee.png")" alt="moguLychee" style="width:100%">
+                <div class="container">
+                    <h2>Mogu Mogu Lychee</h2>
+                    <p></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <img src="@routes.Assets.versioned("images/moguStrawberry.png")" alt="moguStrawberry.png" style="width:100%">
+                <div class="container">
+                    <h2>Mogu Mogu Strawberry</h2>
+                    <p></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <img src="@routes.Assets.versioned("images/moguWatermelon.png")" alt="moguWatermelon" style="width:100%">
+                <div class="container">
+                    <h2>Mogu Mogu Watermelon</h2>
+                    <p></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <img src="@routes.Assets.versioned("images/moguGrape.png")" alt="moguGrape" style="width:100%">
+                <div class="container">
+                    <h2>Mogu Mogu Grape</h2>
+                    <p></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <img src="@routes.Assets.versioned("images/moguBlueberry.png")" alt="moguBlueberry" style="width:100%">
+                <div class="container">
+                    <h2>Mogu Mogu BlueBerry</h2>
+                    <p></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="card">
+                <img src="@routes.Assets.versioned("images/oishiGreentea.png")" alt="oishiGreentea" style="width:100%">
+                <div class="container">
+                    <h2>Oishi Original</h2>
+                    <p></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <img src="@routes.Assets.versioned("images/oishiHoneylemon.jpg")" alt="oishiHoneylemon" style="width:100%">
+                <div class="container">
+                    <h2>Oishi Honey Lemon</h2>
+                    <p></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <img src="@routes.Assets.versioned("images/oishiGenmai.png")" alt="oishiGenmai" style="width:100%">
+                <div class="container">
+                    <h2>Oishi Genmai Flavour</h2>
+                    <p></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <img src="@routes.Assets.versioned("images/oishiBlacktea.png")" alt="Oishi Black Tea" style="width:100%">
+                <div class="container">
+                    <h2>Oishi Black Tea</h2>
+                    <p></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <img src="@routes.Assets.versioned("images/oishiGrape.png")" alt="oishiGrape" style="width:100%">
+                <div class="container">
+                    <h2>Oishi Grape</h2>
+                    <p></p>
+                    <p><input type="button" value="2.50.-" class="button"></p>
                 </div>
             </div>
         </div>

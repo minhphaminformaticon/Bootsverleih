@@ -58,3 +58,19 @@ table{
 h2{
     text-align: center;
 }
+.containerBox {
+    display: flex;
+    height: 100vh; /* Full height of the viewport */
+}
+
+.left-side {
+    flex: 1; /* Takes up half the available space */
+    background-color: #333333; /* Adjust color as needed */
+    min-height: 200vh;
+}
+
+.right-side {
+    flex: 1;
+    background-color: #333333;
+    min-height: 200vh;
+}

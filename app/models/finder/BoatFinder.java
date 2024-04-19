@@ -15,4 +15,8 @@ public class BoatFinder extends Finder<String, BoatTable> {
     public List<BoatTable> findBoats(){
         return query().where().findList();
     }
+
+    public BoatTable getKfz(String kfz){
+        return query().where().eq("vehiclelicenseplate", kfz).findOne();
+    }
 }

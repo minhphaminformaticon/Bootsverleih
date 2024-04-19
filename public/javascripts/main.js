@@ -1,14 +1,14 @@
 
 
 
-function methodForTime() {
-    for (let hour = 0; hour < 24; hour++) {
-        for (let minute = 0; minute < 60; minute += 15) {
-            const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-            document.write(`<option value="${timeString}">${timeString}</option>`);
-        }
-    }
-}
+// function methodForTime() {
+//     for (let hour = 0; hour < 24; hour++) {
+//         for (let minute = 0; minute < 60; minute += 15) {
+//             const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+//             document.write(`<option value="${timeString}">${timeString}</option>`);
+//         }
+//     }
+// }
 const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -89,6 +89,50 @@ function logout(){
     }, 2400);
 }
 
+var boatID;
+function deleteConfirm(id) {
+    let x;
+    if (confirm('Are you sure you want to delete boat ' + id + '?') === true) {
+        x = 'true'
+    } else {
+        x = 'false'
+    }
+
+    let testJavascriptRoute = javascriptRoutes.controllers.HomeController.boatDelete(id);
+
+    if (x === 'true') {
+        fetch(testJavascriptRoute.url)
+            .then(r => {
+                debugger;
+                if (r.status === 400) {
+                    alert('Can not delete the boat. Please Try again!')
+                } else {
+                    console.log(r)
+                    return r.json();
+                }
 
 
+            }).then(r => {
+                boatID = id;
+                console.log(r);
+                console.log(r.boatID);
 
+                const boatIDdeleted = r.boatID;
+                alert("DAS BOOT " + boatIDdeleted + " WURDE ERFOLGREICH GELÖSCHT")
+                document.getElementById(boatIDdeleted).style.display = "none";
+
+                const boatsInTable = document.querySelectorAll(".boatDataSets")
+                let numberOfBoats = 0;
+                for (let i = 0; i < boatsInTable.length; i++){
+                    if (boatsInTable[i].style.display !== "none"){
+                        numberOfBoats++
+                    }
+                }
+                if (numberOfBoats === 0){
+                    document.getElementById("boatTableRow").style.display = "none";
+                    document.getElementById("noBoatsAvailable").style.display = "block";
+                }
+
+        });
+    }
+}

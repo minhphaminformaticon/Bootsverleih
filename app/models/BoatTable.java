@@ -1,12 +1,10 @@
 package models;
 import akka.actor.typed.javadsl.Adapter;
 import io.ebean.Model;
+import models.finder.BoatFinder;
 import models.view.BoatTableViewAdapter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -19,7 +17,6 @@ public class BoatTable extends Model{
     public String model;
     @Column(name = "vehiclelicenseplate")
     public String vehicleLicensePlate;
-
 
     public int getBoatID() {
         return boatID;
@@ -44,4 +41,6 @@ public class BoatTable extends Model{
     public void setVehicleLicensePlate(String vehicleLicensePlate) {
         this.vehicleLicensePlate = vehicleLicensePlate;
     }
+
+    public  static final BoatFinder FINDER = new BoatFinder();
 }

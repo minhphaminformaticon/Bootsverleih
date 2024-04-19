@@ -42,6 +42,12 @@ td {
     font-family: gunsan, Serif;
 
 }
+img {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
 .form-popup {
     display: none;
     position: fixed;
@@ -166,6 +172,10 @@ a {
     opacity: 30%;
     transition: 0.4s;
     mix-blend-mode: difference;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
 }
 
 
@@ -435,8 +445,9 @@ body {
         border-radius: 5px;
         cursor: pointer;
         text-align: center;
-        position: absolute;
-        left: 49%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .button2:hover {
@@ -527,4 +538,33 @@ td.boatData {
     color: #333333;
     font-family: sans-serif;
     text-align: center;
+}
+
+a#wasteBasket {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    mix-blend-mode: normal;
+    display: inline-block;
+    padding: 10px 20px;
+    width: 50px;
+    background-color: red;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.deleteNoti {
+    display: none;
+}
+
+.boatDataSets {
+
 }

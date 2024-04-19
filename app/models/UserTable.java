@@ -27,4 +27,12 @@ public class UserTable extends Model {
     @Column(name = "phone")
     public String number;
 
+    public UserTable(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public UserTable() {
+
+    }
+
 }

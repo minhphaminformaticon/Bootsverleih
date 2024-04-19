@@ -24,25 +24,35 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         ">
-
-            @if(boatTableViewAdapterList.isEmpty) {
-                <p style="font-family: sans-serif">No boats available</p>
-            } else {
-                <table>
-                <tr>
+        @if(boatTableViewAdapterList.isEmpty) {
+            <p style="font-family: sans-serif;" >No boats available</p>
+        } else {
+            <p id="noBoatsAvailable" style="font-family: sans-serif; display: none" >No boats available</p>
+            <table id="boatTable">
+                <tr id="boatTableRow">
                     <td class="boatData">Boat Model</td>
                     <td class="boatData">Vehicle License Plate</td>
                 </tr>
-                @for(data <- boatTableViewAdapterList) {
-                    <tr>
+                @for((data, index) <- boatTableViewAdapterList.zipWithIndex) {
+                    <tr class="boatDataSets" id="@data.id">
                         <td class="boatData">@data.model</td>
-                        <td class="boatData">@data.vehicleLicensePlate</td>
+                        <td class="boatData" id="kfz_@index">@data.vehicleLicensePlate</td>
+                        <td class="boatData">
+                            <a class="button3" id="wasteBasket" onclick="deleteConfirm(document.getElementById('kfz_' + @index).innerHTML)">🗑️</a>
+                        </td>
                     </tr>
                 }
-                </table>
-            }
+            </table>
+        }
+
+
         </div>
+        <p id="deleteConfirm"  class="deleteNoti" style="">
+
+        </p>
+        <div>
             <a href="@controllers.routes.HomeController.addingBoat()" class="button2">+</a>
+        </div>
     </section>
     <section style="min-height: 70vh">
         <div style="left: 43%;
@@ -86,4 +96,7 @@
         </div>
     </section>
     @footer()
+
+    <script type="text/javascript" src="@routes.HomeController.javascriptRoutes"></script>
+
 }

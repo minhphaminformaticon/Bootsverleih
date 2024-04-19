@@ -17,6 +17,7 @@ POST    /login                      controllers.HomeController.submitLogin(reque
 +nocsrf
 POST    /manage/boatconfiguration   controllers.HomeController.submitBoatConfiguration(request: Request)
 
+
 GET     /reservation                controllers.HomeController.showReservation(request: Request)
 
 GET     /drinks                     controllers.HomeController.drinks(request: Request)
@@ -30,6 +31,15 @@ GET     /login                      controllers.HomeController.login(request: Re
 GET     /logout                     controllers.HomeController.logOut(request: Request)
 
 GET     /manage/boatconfiguration   controllers.HomeController.addingBoat(request: Request)
+
+GET     /minh/manage/boatconfiguration/:id   controllers.HomeController.boatDelete(id: String, request: Request)
+
+GET     /aboutUs/pong               controllers.HomeController.pong(request: Request)
+
+# javascript routes
+GET     /javascript-routes          controllers.HomeController.javascriptRoutes(request: Request)
+
+
 
 
 

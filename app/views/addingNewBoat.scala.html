@@ -8,6 +8,7 @@
 @(boat: Form[Boat], reservationForm: Form[ReservationForm], loginIcon: String)(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
 @main("Bootsverleih - MAKO"){
     <script defer src="@routes.Assets.versioned("javascripts/aboutUs/aboutUs.js")" type="text/javascript"></script>
+@*    <script type="text/javascript" src="@routes.HomeController.javascriptRoutes"></script>*@
     @header(reservationForm, loginIcon)
     <p id="showReservation" style="display: none">@showReservation</p>
     <section style="min-height: 70vh">

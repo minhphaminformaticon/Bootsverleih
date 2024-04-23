@@ -17,7 +17,8 @@ public class BoatTable extends Model{
     public String model;
     @Column(name = "vehiclelicenseplate")
     public String vehicleLicensePlate;
-
+    @OneToMany(mappedBy = "boatTable")
+    List<ReservationRequests> reservationRequests;
     public int getBoatID() {
         return boatID;
     }

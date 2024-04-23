@@ -2,10 +2,8 @@ package models;
 
 import io.ebean.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -13,7 +11,7 @@ public class UserTable extends Model {
 
     @Id
     @Column(name ="id")
-    public int userID;
+    public Integer userID;
 
     @Column(name = "firstname")
     public String firstName;

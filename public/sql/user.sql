@@ -8,8 +8,3 @@ CREATE TABLE user(
     phone CHAR(12)
 );
 
-INSERT INTO user (firstname, lastname, email, phone)
-VALUES
-('John', 'Doe', 'john@example.com', 'password123'),
-('Jane', 'Smith', 'jane@example.com', 'securepassword'),
-('Alice', 'Johnson', 'alice@example.com', 'p@ssw0rd');

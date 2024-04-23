@@ -2,10 +2,11 @@
 @import forms.ReservationForm
 @import play.mvc.Http.Request
 @import forms.Login
-@(loginForm: forms.Login, reservationForm: Form[ReservationForm], loginIcon: String)(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
+@import models.view.BoatTableViewAdapter
+@(loginForm: forms.Login, reservationForm: Form[ReservationForm], loginIcon: String, boatTableViewAdapterList: List[BoatTableViewAdapter])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
 
 @main("Bootsverleih - MAKO"){
-    @header(reservationForm, loginIcon)
+    @header(reservationForm, loginIcon, boatTableViewAdapterList)
     <div style="min-height: 40vh"></div>
     <h1 class="loginTitle">
         YOU'RE LOGGED IN

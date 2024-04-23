@@ -1,7 +1,9 @@
 @import forms.ReservationForm
+@import models.view.BoatTableViewAdapter
 @import play.mvc.Http.Request
+@import views.html.helper.options
 
-@(reservationForm: Form[ReservationForm])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
+@(reservationForm: Form[ReservationForm], boatTableViewAdapterList: List[BoatTableViewAdapter])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
 <div class="form-popup" id="myForm">
     <div class="form-container">
         <h1 style="color: #333333">Reservation</h1>
@@ -25,7 +27,24 @@
             ){ (id, name, value, args) =>
                 <input type="time" id="@id" value="@value" name= "@name" @toHtmlArgs(args)>
             }
-            <button class="btn" type="submit">Send</button>
+            @if(boatTableViewAdapterList.isEmpty) {
+                <p style="font-family: sans-serif">
+                    no boats available
+                </p>
+            } else {
+                @helper.select(
+                    reservationForm("boatID"),
+                    options = boatTableViewAdapterList.toSeq.map(entry => entry.id.toString -> entry.model),
+                    Symbol("_label") -> "boat selection",
+                    Symbol("_showConstraints") -> false
+                )
+
+
+                <button class="btn" type="submit">Send</button>
+            }
+
+
+
             <button class="btn" type="reset">
                 Reset
             </button>

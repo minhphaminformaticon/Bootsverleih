@@ -1,8 +1,9 @@
 @import views.html.templates.form
 @import forms.ReservationForm
 @import play.mvc.Http.Request
+@import models.view.BoatTableViewAdapter
 
-@(reservationForm: Form[ReservationForm], loginIcon: String)(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
+@(reservationForm: Form[ReservationForm], loginIcon: String, boatTableViewAdapterList: List[BoatTableViewAdapter])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
 <header>
         <a class="stickyHeader stickyHeaderTransition" href="@controllers.routes.HomeController.index()">
         MAKO - BOAT RENTAL & SEA LOUNGE
@@ -27,4 +28,4 @@
             color: wheat;
         }
 </style>
-@form(reservationForm)
+@form(reservationForm, boatTableViewAdapterList)

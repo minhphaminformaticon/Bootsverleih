@@ -2,10 +2,11 @@
 @import views.html.templates.footer
 @import play.mvc.Http.Request
 @import forms.ReservationForm
-@(reservationForm: Form[ReservationForm], loginIcon: String)(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
+@import models.view.BoatTableViewAdapter
+@(reservationForm: Form[ReservationForm], loginIcon: String, boatTableViewAdapterList: List[BoatTableViewAdapter])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
 @main("Bootsverleih - MAKO"){
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/drinks/drinks.css")">
-    @header(reservationForm, loginIcon)
+    @header(reservationForm, loginIcon, boatTableViewAdapterList)
     <p id="showReservation" style="display: none">@showReservation</p>
     <div class ="containerBox">
         <div class="left-side">

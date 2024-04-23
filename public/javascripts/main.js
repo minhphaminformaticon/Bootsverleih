@@ -90,7 +90,7 @@ function logout(){
 }
 
 var boatID;
-function deleteConfirm(id) {
+function deleteConfirm(id, index) {
     let x;
     if (confirm('Are you sure you want to delete boat ' + id + '?') === true) {
         x = 'true'
@@ -106,6 +106,9 @@ function deleteConfirm(id) {
                 debugger;
                 if (r.status === 400) {
                     alert('Can not delete the boat. Please Try again!')
+                } else if (r.status === 500) {
+                    alert('the boat is already used for a reservation')
+                    document.getElementById("wasteBasket" + index).style.display = "none";
                 } else {
                     console.log(r)
                     return r.json();

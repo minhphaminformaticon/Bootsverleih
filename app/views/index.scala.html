@@ -3,11 +3,12 @@
 @import views.html.templates.footer
 @import forms.ReservationForm
 @import play.mvc.Http.Request
+@import models.view.BoatTableViewAdapter
 
-@(reservationForm: Form[ReservationForm], loginIcon: String)(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
+@(reservationForm: Form[ReservationForm], loginIcon: String, boatTableViewAdapterList: List[BoatTableViewAdapter])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
 @main("Bootsverleih - MAKO") {
     <script defer src="@routes.Assets.versioned("javascripts/index/index.js")" type="text/javascript"></script>
-  @header(reservationForm, loginIcon)
+  @header(reservationForm, loginIcon, boatTableViewAdapterList)
     <div class="animatedElement" style="transition:  0.6s ease-in-out; transform: translateY(50%);">
         <h1 style="font-size: 500%; margin-top: 20%;  text-decoration: underline;">WELCOME TO MAKO!</h1>
         <p style="color: #FCF4DE;">マコはサメで、他の魚を食べるので、あなたの娯楽のためにここにいます</p>
@@ -31,7 +32,7 @@
                     sun-soaked escapades, and making memories with friends and family.
                 </h2>
             </div>
-            <img  style=" position: absolute; right: 5%; top: 10%" src="@routes.Assets.versioned("images/cuteShark3.png")">
+            <img  class="sharkIcons"  src="@routes.Assets.versioned("images/cuteShark3.png")">
             <h1>MEET MAKO</h1>
             <div class="aboutMako">
                 <h2 >Our friendly Mako mascot is here to add a touch of whimsy to your boating experience.
@@ -54,7 +55,7 @@
                     The Sea Lounge is your spot to unwind, swap stories, and soak in the lakeside ambiance.
                 </h2>
             </div>
-            <img  style=" position: absolute; right: 5%; top: 10%" src="@routes.Assets.versioned("images/cuteShark4.png")">
+            <img  class="sharkIcons" style="" src="@routes.Assets.versioned("images/cuteShark4.png")">
             <h1>MAKO BOATS</h1>
             <div class="aboutMako">
                 <h2 >Hop on board our Mako boats – the life of the party on Lake Zurich.
@@ -109,7 +110,7 @@
                 </div>
             </div>
        </div>
-        <img  style=" position: absolute; left: 45%; top: 30%" src="@routes.Assets.versioned("images/cuteShark5.png")">
+        <img  style="  margin-left: auto; margin-right: auto; display: block; top: 30%" src="@routes.Assets.versioned("images/cuteShark5.png")">
     </section>
     <div class="animatedElement">
         <h1 style="font-size: 300%; text-decoration: underline; padding-bottom: 5%">WANT TO KNOW MORE ABOUT US?</h1>

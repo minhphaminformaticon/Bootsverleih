@@ -1,10 +1,8 @@
 package models;
 
 import io.ebean.Model;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -25,11 +23,55 @@ public class ReservationRequests extends Model {
     @Column(name = "reservationdate")
     public LocalDate reservationDate;
 
-    @Column(name = "fk_boat_id")
-    public Integer boatFKID;
 
-    @Column(name = "fk_customer_id")
-    public Integer customerFKID;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_boat_id", referencedColumnName = "id")
+    public BoatTable boatTable = new BoatTable();
+
+
+
+    public void setBoatID(int boatID) {
+        this.boatTable.boatID = boatID;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public LocalTime getTimeFrom() {
+        return timeFrom;
+    }
+
+    public void setTimeFrom(LocalTime timeFrom) {
+        this.timeFrom = timeFrom;
+    }
+
+    public LocalTime getTimeTo() {
+        return timeTo;
+    }
+
+    public void setTimeTo(LocalTime timeTo) {
+        this.timeTo = timeTo;
+    }
+
+    public LocalDate getReservationDate() {
+        return reservationDate;
+    }
+
+    public void setReservationDate(LocalDate reservationDate) {
+        this.reservationDate = reservationDate;
+    }
+
+    public BoatTable getBoatTable() {
+        return boatTable;
+    }
+
+    public void setBoatTable(BoatTable boatTable) {
+        this.boatTable = boatTable;
+    }
 }
-
-

@@ -79,9 +79,9 @@ public class HomeController extends Controller {
                 getLogged(request);
                 switch (shortenedValue) {
                     case "/drinks":
-                        return badRequest(views.html.drinks.render(submitForm, logged, request, messages.preferred(request), true));
+                        return badRequest(views.html.drinks.render(submitForm, logged, getBoatTableViewAdapter(), request, messages.preferred(request), true));
                     case "/aboutUs":
-                        return badRequest(views.html.aboutUs.render(submitForm, logged, request, messages.preferred(request), true));
+                        return badRequest(views.html.aboutUs.render(submitForm, logged, getBoatTableViewAdapter(), request, messages.preferred(request), true));
                     case "/manage":
                         return badRequest(views.html.manage.render(getBoatTableViewAdapter(), getBoatManagementForm(), submitForm, logged, request, messages.preferred(request), true));
                     default:
@@ -97,9 +97,9 @@ public class HomeController extends Controller {
         reservationRequests.timeFrom = reservationForm.timeFromLocalTime;
         reservationRequests.timeTo = reservationForm.timeToLocalTime;
         reservationRequests.reservationDate = reservationForm.dateLocalDate;
-        reservationRequests.boatFKID = null;
+        reservationRequests.boatTable.boatID = reservationForm.getBoatID();
         reservationRequests.save();
-        return ok(views.html.showReservation.render(reservationForm, submitForm, getLogged(request), request, messages.preferred(request), true));
+        return ok(views.html.showReservation.render(reservationForm, submitForm, getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), true));
     }
 
     public Result submitBoatManagement(Http.Request request) throws FileNotFoundException {
@@ -150,19 +150,19 @@ public class HomeController extends Controller {
 
         switch (shortenValue) {
             case "/drinks]":
-                return ok(views.html.drinks.render(getNewReservationForm(), "🔐", request, messages.preferred(request), false))
+                return ok(views.html.drinks.render(getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
                         .addingToSession(request, "logged", "hallo");
             case "/aboutUs]":
-                return ok(views.html.aboutUs.render(getNewReservationForm(), "🔐", request, messages.preferred(request), false))
+                return ok(views.html.aboutUs.render(getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
                         .addingToSession(request, "logged", "hallo");
             case "/manage]":
                 return ok(views.html.manage.render(getBoatTableViewAdapter(), getBoatManagementForm(), getNewReservationForm(), "🔐", request, messages.preferred(request), false))
                         .addingToSession(request, "logged", "hallo");
             case "/manage/configuration]":
                 Form<Boat> boat = formFactory.form(Boat.class);
-                return ok(views.html.addingNewBoat.render(boat, getNewReservationForm(), "🔐", request, messages.preferred(request), false)).addingToSession(request, "logged", "hallo");
+                return ok(views.html.addingNewBoat.render(boat, getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false)).addingToSession(request, "logged", "hallo");
             default:
-                return ok(views.html.loginConfirmed.render(loginData, getNewReservationForm(), "🔐", request, messages.preferred(request), false))
+                return ok(views.html.loginConfirmed.render(loginData, getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
                         .addingToSession(request, "logged", "hallo");
         }
 
@@ -173,7 +173,7 @@ public class HomeController extends Controller {
         Form<Boat> boat = formFactory.form(Boat.class).withDirectFieldAccess(true)
                 .bindFromRequest(request);
         if (boat.hasErrors()) {
-            return badRequest(views.html.addingNewBoat.render(boat, getNewReservationForm(), getLogged(request), request, messages.preferred(request), false));
+            return badRequest(views.html.addingNewBoat.render(boat, getNewReservationForm(), getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), false));
         }
         Boat submitBoat = boat.get();
         BoatTable boatTable = new BoatTable();
@@ -197,13 +197,13 @@ public class HomeController extends Controller {
                 .bindFromRequest(request);
         getLogged(request);
 
-        return ok(views.html.drinks.render(getNewReservationForm(), getLogged(request), request, messages.preferred(request), false));
+        return ok(views.html.drinks.render(getNewReservationForm(), getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), false));
     }
 
     @With(LoginAction.class)
     public Result aboutUs(Http.Request request) {
         getLogged(request);
-        return ok(views.html.aboutUs.render(getNewReservationForm(), getLogged(request), request, messages.preferred(request), false));
+        return ok(views.html.aboutUs.render(getNewReservationForm(), getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), false));
     }
 
     @With(LoginAction.class)
@@ -233,7 +233,7 @@ public class HomeController extends Controller {
     @With(LoginAction.class)
     public Result addingBoat(Http.Request request) {
         Form<Boat> boat = formFactory.form(Boat.class);
-        return ok(views.html.addingNewBoat.render(boat, getNewReservationForm(), getLogged(request), request, messages.preferred(request), false));
+        return ok(views.html.addingNewBoat.render(boat, getNewReservationForm(), getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), false));
     }
 
     @With(LoginAction.class)
@@ -272,7 +272,7 @@ public class HomeController extends Controller {
 
     //helper methods
     private Html renderIndexView(Http.Request request, Form<ReservationForm> form, String logged, boolean showReservation) {
-        return views.html.index.render(form, logged, request, messages.preferred(request), showReservation);
+        return views.html.index.render(form, logged, getBoatTableViewAdapter(), request, messages.preferred(request), showReservation);
     }
 
     private Form<ReservationForm> getNewReservationForm() {

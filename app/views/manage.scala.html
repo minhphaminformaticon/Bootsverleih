@@ -10,7 +10,7 @@
 @(boatTableViewAdapterList: List[BoatTableViewAdapter], boatManagement: Form[BoatManagement], reservationForm2: Form[ReservationForm], loginIcon: String)(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
 @main("Bootsverleih - MAKO"){
 
-    @header(reservationForm2, loginIcon)
+    @header(reservationForm2, loginIcon, boatTableViewAdapterList)
     <section style="margin-top: 20%; min-height: 50vh">
         <div>
             <h2 style="text-align: center">BOAT LIST</h2>
@@ -38,7 +38,7 @@
                         <td class="boatData">@data.model</td>
                         <td class="boatData" id="kfz_@index">@data.vehicleLicensePlate</td>
                         <td class="boatData">
-                            <a class="button3" id="wasteBasket" onclick="deleteConfirm(document.getElementById('kfz_' + @index).innerHTML)">🗑️</a>
+                            <a class="button3 wasteBasket" id="wasteBasket@index" onclick="deleteConfirm(document.getElementById('kfz_' + @index).innerHTML, @index)">🗑️</a>
                         </td>
                     </tr>
                 }

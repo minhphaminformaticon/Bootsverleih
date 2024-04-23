@@ -304,6 +304,10 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+.sharkIcons{
+    display: block; margin-right: auto; margin-left: auto; top: 10%
+}
 .marqueeText{
     padding-top: 5%;
 }
@@ -540,7 +544,7 @@ td.boatData {
     text-align: center;
 }
 
-a#wasteBasket {
+a.wasteBasket {
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */

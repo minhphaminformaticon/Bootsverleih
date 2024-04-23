@@ -10,6 +10,8 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 +nocsrf
 POST    /reservation                controllers.HomeController.submitReservation(request: Request)
++noscrf
+POST    /                           controllers.HomeController.submitReservation(request: Request)
 +nocsrf
 POST    /manage                     controllers.HomeController.submitBoatManagement(request: Request)
 +nocsrf

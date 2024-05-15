@@ -6,6 +6,7 @@ import models.ReservationRequests;
 import models.UserTable;
 import models.finder.ReservationFinder;
 import models.view.ReservationsViewAdapter;
+import org.checkerframework.checker.units.qual.K;
 import play.data.validation.Constraints;
 import play.data.validation.ValidationError;
 
@@ -44,8 +45,9 @@ public class ReservationForm implements Constraints.Validatable<List<ValidationE
             ReservationsViewAdapter r = new ReservationsViewAdapter(reservationRequests.get(i));
             reservationsViewAdapterList.add(r);
         }
-
-        if (date == null || Objects.equals(date, "")) {
+        timeFromLocalTime = setTimeFromString(timeFrom);
+        timeToLocalTime = setTimeFromString(timeTo);
+        if  (Objects.equals(date, "")) {
             validationErrors.add(new ValidationError("date", "You need to enter a date"));
         } else {
             dateLocalDate = setDateFromString(date);
@@ -54,43 +56,62 @@ public class ReservationForm implements Constraints.Validatable<List<ValidationE
             }
         }
 
-        timeFromLocalTime = setTimeFromString(timeFrom);
+
         if (timeFromLocalTime == null) {
             validationErrors.add(new ValidationError("timeFrom", "You need to enter the time"));
-        } else if (timeFromLocalTime.getMinute() % 15 != 0) {
-            validationErrors.add(new ValidationError("timeFrom", "You need to put the minutes in 15 interval"));
-        }
-
-        timeToLocalTime = setTimeFromString(timeTo);
-        if (timeToLocalTime == null) {
-            validationErrors.add(new ValidationError("timeTo", "You need to enter the time"));
-        } else if (timeToLocalTime.getMinute() % 15 != 0) {
-            validationErrors.add(new ValidationError("timeTo", "You need to put the minutes in 15 interval"));
-        }
-
-        if (timeToLocalTime != null && timeFromLocalTime != null){
-            if (timeFromLocalTime.isAfter(timeToLocalTime) || timeFromLocalTime.equals(timeToLocalTime)) {
-                validationErrors.add(new ValidationError("timeFrom", "Time from can't be after Time to"));
+        } else {
+            if (timeFromLocalTime.getMinute() % 15 != 0) {
+                validationErrors.add(new ValidationError("timeFrom", "You need to put the minutes in 15 interval"));
+            }
+            if (timeFromLocalTime.isBefore(LocalTime.parse("09:00:00"))) {
+                validationErrors.add(new ValidationError("timeFrom", "The time is before opening time")) ;
             }
         }
-        if (boatID == null || boatID.equals("") || boatID == 0){
+
+
+
+        if (timeToLocalTime == null) {
+            validationErrors.add(new ValidationError("timeTo", "You need to enter the time"));
+        } else {
+            if (timeToLocalTime.getMinute() % 15 != 0) {
+                validationErrors.add(new ValidationError("timeTo", "You need to put the minutes in 15 interval"));
+            }
+            if (timeToLocalTime.isAfter(LocalTime.parse("19:00:00"))){
+                validationErrors.add(new ValidationError("timeTo", "The time is after closing time."));
+            }
+        }
+
+
+        if (timeToLocalTime != null && timeFromLocalTime != null){
+          if (timeFromLocalTime.isAfter(timeToLocalTime) || timeFromLocalTime.equals(timeToLocalTime)) {
+                validationErrors.add(new ValidationError("timeFrom", "Time from can't be after Time to"));
+          }
+        } else {
+            validationErrors.add(new ValidationError("timeFrom", "Enter both times"));
+        }
+        if (boatID == null){
             validationErrors.add(new ValidationError("boatID", "You must select one of the options"));
         } else {
+            if (reservationsViewAdapterList.isEmpty()){
+                System.out.println("hello");
+            } else {
+                for (int i = 0; reservationsViewAdapterList.size() > i; i++) {
+                    if (reservationsViewAdapterList.get(i).timeFrom.equals(this.timeFromLocalTime)
+                            && reservationsViewAdapterList.get(i).boatID == this.boatID
+                            && this.dateLocalDate.isEqual(reservationsViewAdapterList.get(i).reservationDate)) {
 
-            for (ReservationsViewAdapter existingReservation : reservationsViewAdapterList) {
-                if (existingReservation.timeFrom.equals(this.timeFromLocalTime)
-                        && existingReservation.boatID == this.boatID
-                        && this.dateLocalDate.isEqual(existingReservation.reservationDate)) {
-
-                    validationErrors.add(new ValidationError("boatID", "The boat is already reserved for this time"));
-                    break;
-                } else {
-                    LocalTime timeFromConvert = setTimeFromString(timeFrom);
-                    long timeBetween = ChronoUnit.MINUTES.between(timeFromConvert, existingReservation.timeTo);
-
-                    if ((timeBetween < 15) && timeBetween >= 0 && dateLocalDate.isEqual(existingReservation.reservationDate) && existingReservation.boatID == this.boatID) {
-                        validationErrors.add(new ValidationError("boatID", "The boat is already reserved, your reservations must be set at least 15 minutes after the last one"));
+                        validationErrors.add(new ValidationError("boatID", "The boat is already reserved for this time"));
                         break;
+                    } else {
+                        if (!Objects.equals(timeFrom, "")) {
+                            LocalTime timeFromConvert = setTimeFromString(timeFrom);
+                            long timeBetween = ChronoUnit.MINUTES.between(timeFromConvert, reservationsViewAdapterList.get(i).timeTo);
+
+                            if ((timeBetween < 15) && timeBetween >= 0 && dateLocalDate.isEqual(reservationsViewAdapterList.get(i).reservationDate) && reservationsViewAdapterList.get(i).boatID == this.boatID) {
+                                validationErrors.add(new ValidationError("boatID", "The boat is already reserved, your reservations must be set at least 15 minutes after the last one"));
+                                break;
+                            }
+                        }
                     }
                 }
             }

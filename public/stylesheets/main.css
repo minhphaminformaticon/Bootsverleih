@@ -572,3 +572,15 @@ a.wasteBasket {
 .boatDataSets {
 
 }
+
+a#showReservation :hover{
+    opacity: 100%;
+
+}
+
+a#showReservation {
+    mix-blend-mode: normal;
+    opacity: 100%;
+    font-family: "arial";
+    font-size: 13px;
+}

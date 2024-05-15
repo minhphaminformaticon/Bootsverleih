@@ -22,6 +22,8 @@ POST    /manage/boatconfiguration   controllers.HomeController.submitBoatConfigu
 
 GET     /reservation                controllers.HomeController.showReservation(request: Request)
 
+GET     /reservation/display        controllers.HomeController.reservation(request: Request)
+
 GET     /drinks                     controllers.HomeController.drinks(request: Request)
 
 GET     /aboutUs                    controllers.HomeController.aboutUs(request: Request)
@@ -36,10 +38,14 @@ GET     /manage/boatconfiguration   controllers.HomeController.addingBoat(reques
 
 GET     /minh/manage/boatconfiguration/:id   controllers.HomeController.boatDelete(id: String, request: Request)
 
+GET     /minh/reservation           controllers.HomeController.displayReservationsOnCalendar(request: Request)
+
 GET     /aboutUs/pong               controllers.HomeController.pong(request: Request)
+
 
 # javascript routes
 GET     /javascript-routes          controllers.HomeController.javascriptRoutes(request: Request)
+GET     /javascript-routes-reservations         controllers.HomeController.javaScriptRoutesDisplayReservationsOnCalendar(request: Request)
 
 
 

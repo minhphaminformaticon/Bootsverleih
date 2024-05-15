@@ -19,4 +19,6 @@ public class ReservationFinder extends Finder<String, ReservationRequests> {
 
     public ReservationRequests getReservationDate(LocalDate reservationDate){return query().where().eq("reservationDate", reservationDate).findOne();}
 
+
+
 }

@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 function submitForm() {
-    a = document.getElementById("showReservation").innerHTML;
+    a = document.getElementById("showSubmittedReservation").innerHTML;
     if (a === "true") {
         document.getElementById("myForm").style.display = "block"
     }
@@ -97,13 +97,13 @@ function deleteConfirm(id, index) {
     } else {
         x = 'false'
     }
-
+    debugger;
     let testJavascriptRoute = javascriptRoutes.controllers.HomeController.boatDelete(id);
 
     if (x === 'true') {
         fetch(testJavascriptRoute.url)
             .then(r => {
-                debugger;
+
                 if (r.status === 400) {
                     alert('Can not delete the boat. Please Try again!')
                 } else if (r.status === 500) {
@@ -137,5 +137,6 @@ function deleteConfirm(id, index) {
                 }
 
         });
+
     }
 }

@@ -7,7 +7,7 @@
 @main("Bootsverleih - MAKO"){
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/drinks/drinks.css")">
     @header(reservationForm, loginIcon, boatTableViewAdapterList)
-    <p id="showReservation" style="display: none">@showReservation</p>
+    <p id="showSubmittedReservation" style="display: none">@showReservation</p>
     <div class ="containerBox">
         <div class="left-side">
 
@@ -227,5 +227,6 @@
     </div>
 
     <section style="min-height: 170vh"></section>
+
 
 }

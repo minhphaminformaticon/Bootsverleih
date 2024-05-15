@@ -1,6 +1,8 @@
 package models;
 
 import io.ebean.Model;
+import models.finder.BoatFinder;
+import models.finder.ReservationFinder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -74,4 +76,6 @@ public class ReservationRequests extends Model {
     public void setBoatTable(BoatTable boatTable) {
         this.boatTable = boatTable;
     }
+
+    public  static final ReservationFinder FINDER = new ReservationFinder();
 }

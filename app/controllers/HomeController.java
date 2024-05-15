@@ -99,7 +99,7 @@ public class HomeController extends Controller {
         reservationRequests.reservationDate = reservationForm.dateLocalDate;
         reservationRequests.boatTable.boatID = reservationForm.getBoatID();
         reservationRequests.save();
-        return ok(views.html.showReservation.render(reservationForm, submitForm, getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), true));
+        return ok(views.html.showSubmittedReservation.render(reservationForm, submitForm, getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), true));
     }
 
     public Result submitBoatManagement(Http.Request request) throws FileNotFoundException {
@@ -191,11 +191,6 @@ public class HomeController extends Controller {
 
     @With(LoginAction.class)
     public Result drinks(Http.Request request) {
-        Form<ReservationForm> submitForm = formFactory
-                .form(ReservationForm.class)
-                .withDirectFieldAccess(true)
-                .bindFromRequest(request);
-        getLogged(request);
 
         return ok(views.html.drinks.render(getNewReservationForm(), getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), false));
     }
@@ -213,6 +208,8 @@ public class HomeController extends Controller {
         getLogged(request);
         return ok(views.html.manage.render(getBoatTableViewAdapter(), boatManagementForm, getNewReservationForm(), getLogged(request), request, messages.preferred(request), false));
     }
+
+
 
     public Result login(Http.Request request) {
         Form<Login> loginForm = formFactory.form(Login.class);
@@ -241,6 +238,11 @@ public class HomeController extends Controller {
         return ok(views.html.pong.render(request, messages.preferred(request)));
     }
 
+    @With(LoginAction.class)
+    public Result reservation(Http.Request request){
+        return ok(views.html.displayReservation.render(getNewReservationForm(), getBoatTableViewAdapter(), getLogged(request), request, messages.preferred(request), false));
+    }
+
 
     public Result javascriptRoutes(Http.Request request) {
         return ok(JavaScriptReverseRouter.create(
@@ -248,8 +250,34 @@ public class HomeController extends Controller {
                         "xhr",
                         request.host(),
                         routes.javascript.HomeController.boatDelete()
+
                 )
         ).as(Http.MimeTypes.JAVASCRIPT);
+    }
+
+    public Result javaScriptRoutesDisplayReservationsOnCalendar(Http.Request request){
+        return ok(JavaScriptReverseRouter.create(
+                "javaScriptRoutesDisplayReservationsOnCalendar",
+                "xhr",
+                request.host(),
+                routes.javascript.HomeController.displayReservationsOnCalendar()
+        )
+        ).as(Http.MimeTypes.JAVASCRIPT);
+    }
+
+    public Result displayReservationsOnCalendar(Http.Request request){
+        String jsonReservations = "";
+
+        try {
+
+//            for (int i = 0;ReservationRequests.FINDER.findReservations().size() > i; i++){
+//                jsonReservations = new ObjectMapper().writeValueAsString(ReservationRequests.FINDER.findReservations().get(i));
+//            }
+              jsonReservations = new ObjectMapper().writeValueAsString(ReservationRequests.FINDER.findReservations());
+        } catch (JsonProcessingException jpe){
+            System.out.println(jpe);
+        }
+        return ok(jsonReservations);
     }
 
     public Result boatDelete(String id, Http.Request request) {

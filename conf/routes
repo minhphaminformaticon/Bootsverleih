@@ -43,6 +43,7 @@ GET     /minh/reservation           controllers.HomeController.displayReservatio
 GET     /aboutUs/pong               controllers.HomeController.pong(request: Request)
 
 
+
 # javascript routes
 GET     /javascript-routes          controllers.HomeController.javascriptRoutes(request: Request)
 GET     /javascript-routes-reservations         controllers.HomeController.javaScriptRoutesDisplayReservationsOnCalendar(request: Request)

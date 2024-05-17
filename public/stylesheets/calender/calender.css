@@ -39,7 +39,7 @@
 }
 
 
-.start-9 {
+.start-90 {
     grid-row-start: 2;
 }
 
@@ -54,7 +54,7 @@
     grid-row-start: 5;
 }
 
-.start-10 {
+.start-100 {
     grid-row-start: 6;
 }
 
@@ -70,7 +70,7 @@
     grid-row-start: 9;
 }
 
-.start-11 {
+.start-110 {
     grid-row-start: 10;
 }
 
@@ -86,7 +86,7 @@
     grid-row-start: 13;
 }
 
-.start-12 {
+.start-120 {
     grid-row-start: 14
 }
 
@@ -102,7 +102,7 @@
     grid-row-start: 17;
 }
 
-.start-13 {
+.start-130 {
     grid-row-start: 18;
 }
 
@@ -118,7 +118,7 @@
     grid-row-start: 21;
 }
 
-.start-14 {
+.start-1400 {
     grid-row-start: 22;
 }
 
@@ -134,7 +134,7 @@
     grid-row-start: 25;
 }
 
-.start-15 {
+.start-150 {
     grid-row-start: 26;
 }
 
@@ -150,7 +150,7 @@
     grid-row-start: 29;
 }
 
-.start-16 {
+.start-160 {
     grid-row-start: 30;
 }
 
@@ -166,7 +166,7 @@
     grid-row-start: 33;
 }
 
-.start-17 {
+.start-170 {
     grid-row-start: 34;
 }
 
@@ -182,7 +182,7 @@
     grid-row-start: 37;
 }
 
-.start-18 {
+.start-180 {
     grid-row-start: 38;
 }
 
@@ -204,7 +204,7 @@
 
 /*end time*/
 
-.end-9 {
+.end-90 {
     grid-row-end: 2;
 }
 
@@ -220,7 +220,7 @@
     grid-row-end: 5;
 }
 
-.end-10 {
+.end-100 {
     grid-row-end: 6;
 }
 
@@ -236,7 +236,7 @@
     grid-row-end: 9;
 }
 
-.end-11 {
+.end-110 {
     grid-row-end: 10;
 }
 
@@ -252,7 +252,7 @@
     grid-row-end: 13;
 }
 
-.end-12 {
+.end-120 {
     grid-row-end: 14;
 }
 
@@ -268,7 +268,7 @@
     grid-row-end: 17;
 }
 
-.end-13 {
+.end-130 {
     grid-row-end: 18;
 }
 
@@ -284,7 +284,7 @@
     grid-row-end: 21;
 }
 
-.end-14 {
+.end-140 {
     grid-row-end: 22;
 }
 
@@ -300,7 +300,7 @@
     grid-row-end: 25;
 }
 
-.end-15 {
+.end-150 {
     grid-row-end: 26;
 }
 
@@ -316,7 +316,7 @@
     grid-row-end: 29;
 }
 
-.end-16 {
+.end-160 {
     grid-row-end: 30;
 }
 
@@ -332,7 +332,7 @@
     grid-row-end: 33;
 }
 
-.end-17 {
+.end-170 {
     grid-row-end: 34;
 }
 
@@ -348,7 +348,7 @@
     grid-row-end: 37;
 }
 
-.end-18 {
+.end-180 {
     grid-row-end: 38;
 }
 
@@ -364,7 +364,7 @@
     grid-row-end: 41;
 }
 
-.end-19 {
+.end-190 {
     grid-row-end: 42;
 }
 

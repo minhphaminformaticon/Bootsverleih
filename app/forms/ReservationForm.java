@@ -1,12 +1,8 @@
 package forms;
 
-import com.typesafe.sslconfig.ssl.FakeChainedKeyStore;
-import models.BoatTable;
 import models.ReservationRequests;
-import models.UserTable;
 import models.finder.ReservationFinder;
 import models.view.ReservationsViewAdapter;
-import org.checkerframework.checker.units.qual.K;
 import play.data.validation.Constraints;
 import play.data.validation.ValidationError;
 
@@ -30,6 +26,9 @@ public class ReservationForm implements Constraints.Validatable<List<ValidationE
     public LocalTime timeFromLocalTime;
     public LocalTime timeToLocalTime;
     public LocalDate dateLocalDate;
+    public static final int TIME_INTERVAL = 15;
+    public static final int TIME_BETWEEN_RESERVATIONS_REQUIREMENTS = 30;
+    public static final int TIME_BETWEEN_RESERVATIONS_REQUIREMENTS_2 = TIME_BETWEEN_RESERVATIONS_REQUIREMENTS * -1;
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     LocalDate now = LocalDate.now();
@@ -60,7 +59,7 @@ public class ReservationForm implements Constraints.Validatable<List<ValidationE
         if (timeFromLocalTime == null) {
             validationErrors.add(new ValidationError("timeFrom", "You need to enter the time"));
         } else {
-            if (timeFromLocalTime.getMinute() % 15 != 0) {
+            if (timeFromLocalTime.getMinute() % TIME_INTERVAL != 0) {
                 validationErrors.add(new ValidationError("timeFrom", "You need to put the minutes in 15 interval"));
             }
             if (timeFromLocalTime.isBefore(LocalTime.parse("09:00:00"))) {
@@ -73,7 +72,7 @@ public class ReservationForm implements Constraints.Validatable<List<ValidationE
         if (timeToLocalTime == null) {
             validationErrors.add(new ValidationError("timeTo", "You need to enter the time"));
         } else {
-            if (timeToLocalTime.getMinute() % 15 != 0) {
+            if (timeToLocalTime.getMinute() % TIME_INTERVAL != 0) {
                 validationErrors.add(new ValidationError("timeTo", "You need to put the minutes in 15 interval"));
             }
             if (timeToLocalTime.isAfter(LocalTime.parse("19:00:00"))){
@@ -103,13 +102,35 @@ public class ReservationForm implements Constraints.Validatable<List<ValidationE
                         validationErrors.add(new ValidationError("boatID", "The boat is already reserved for this time"));
                         break;
                     } else {
-                        if (!Objects.equals(timeFrom, "")) {
+                        if ((!Objects.equals(timeFrom, "") && !Objects.equals(timeTo, ""))) {
                             LocalTime timeFromConvert = setTimeFromString(timeFrom);
-                            long timeBetween = ChronoUnit.MINUTES.between(timeFromConvert, reservationsViewAdapterList.get(i).timeTo);
+                            LocalTime timeToConvert = setTimeToString(timeTo);
 
-                            if ((timeBetween < 15) && timeBetween >= 0 && dateLocalDate.isEqual(reservationsViewAdapterList.get(i).reservationDate) && reservationsViewAdapterList.get(i).boatID == this.boatID) {
-                                validationErrors.add(new ValidationError("boatID", "The boat is already reserved, your reservations must be set at least 15 minutes after the last one"));
-                                break;
+                            long timeBetweenTimeFromToTimeTo = ChronoUnit.MINUTES.between( reservationsViewAdapterList.get(i).timeTo, timeFromConvert);
+                            long timeBetweenTimeToToTimeFrom = ChronoUnit.MINUTES.between( reservationsViewAdapterList.get(i).timeFrom, timeToConvert);
+                            long timeBetweenTimeFromToTimeFrom = ChronoUnit.MINUTES.between( reservationsViewAdapterList.get(i).timeFrom, timeFromConvert);
+                            long timeBetweenTimeToToTimeTo = ChronoUnit.MINUTES.between( reservationsViewAdapterList.get(i).timeTo, timeToConvert);
+
+
+                            if (timeBetweenTimeFromToTimeFrom < 0) {
+                                if(ifReservationsAreOnTheSameDateAndReservedTheSameBoat(reservationsViewAdapterList.get(i).boatID, this.boatID, dateLocalDate, reservationsViewAdapterList.get(i).reservationDate)) {
+                                    if ((timeBetweenTimeToToTimeFrom <= TIME_BETWEEN_RESERVATIONS_REQUIREMENTS_2)) {
+                                        System.out.println("hello");
+                                    } else {
+                                        validationErrors.add(new ValidationError("boatID", "The boat is already reserved, your reservations must be set at least 30 minutes after the last one"));
+                                        break;
+                                    }
+                                }
+                            } else {
+                                if (ifReservationsAreOnTheSameDateAndReservedTheSameBoat(reservationsViewAdapterList.get(i).boatID, this.boatID, dateLocalDate, reservationsViewAdapterList.get(i).reservationDate)){
+                                    if ((timeBetweenTimeFromToTimeTo >= TIME_BETWEEN_RESERVATIONS_REQUIREMENTS)
+                                        ) {
+                                        System.out.println("hello");
+                                    } else {
+                                        validationErrors.add(new ValidationError("boatID", "The boat is already reserved, your reservations must be set at least 30 minutes after the last one"));
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
@@ -132,6 +153,21 @@ public class ReservationForm implements Constraints.Validatable<List<ValidationE
         } catch (Exception e) {
             return null;
         }
+    }
+    public LocalTime setTimeToString(String time) {
+        if (time == null || time.equals("")) {
+            return null;
+        }
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        try {
+            return LocalTime.parse(time, timeFormatter);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Boolean ifReservationsAreOnTheSameDateAndReservedTheSameBoat(int boatID1, int boatID2, LocalDate reservationDate1, LocalDate reservationDate2) {
+        return (boatID1 == boatID2) && (reservationDate1.isEqual(reservationDate2));
     }
 
     public LocalDate setDateFromString(String date){

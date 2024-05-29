@@ -1,0 +1,231 @@
+$primary-background-color: #333333;
+$secondary-background-color: #FCF4DE;
+$form-background-color: #FFFFFF;
+$font-color1: #FCF4DE;
+$font-color2: #333333;
+$font-color3: #f3f3f3;
+$background-calendar: #c1e1c1;
+$event-reserved: #808080;
+$event-free: #c1e1c1;
+$font-weight: 600;
+
+$nine: 2;
+$nine-15: 3;
+$nine-30: 4;
+$nine-45: 5;
+$ten: 6;
+$ten-15: 7;
+$ten-30: 8;
+$ten-45: 9;
+$eleven: 10;
+$eleven-15: 11;
+$eleven-30: 12;
+$eleven-45: 13;
+$twelve: 14;
+$twelve-15: 15;
+$twelve-30: 16;
+$twelve-45: 17;
+$thirteen: 18;
+$thirteen-15: 19;
+$thirteen-30: 20;
+$thirteen-45: 21;
+$fourteen: 22;
+$fourteen-15: 23;
+$fourteen-30: 24;
+$fourteen-45: 25;
+$fifteen: 26;
+$fifteen-15: 27;
+$fifteen-30: 28;
+$fifteen-45: 29;
+$sixteen: 30;
+$sixteen-15: 31;
+$sixteen-30: 32;
+$sixteen-45: 33;
+$seventeen: 34;
+$seventeen-15: 35;
+$seventeen-30: 36;
+$seventeen-45: 37;
+$eighteen: 38;
+$eighteen-15: 39;
+$eighteen-30: 40;
+$eighteen-45: 41;
+$nineteen: 42;
+
+
+
+
+.calendar {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: auto 1fr;
+  margin: 2rem;
+}
+
+.timeline {
+  display: grid;
+  grid-template-rows: repeat(40, 15px);
+}
+
+.days {
+  display: grid;
+  grid-column: 2;
+  gap: 5px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.day {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.events {
+  display: grid;
+  grid-template-rows: repeat(40, 15px);
+  border-radius: 5px;
+  background: $background-calendar;
+  border: $event-free 3px;
+}
+
+
+.start-90 { grid-row-start: $nine; }
+.start-915 { grid-row-start: $nine-15; }
+.start-930 { grid-row-start: $nine-30; }
+.start-945 { grid-row-start: $nine-45; }
+.start-100 { grid-row-start: $ten; }
+.start-1015 { grid-row-start: $ten-15; }
+.start-1030 { grid-row-start: $ten-30; }
+.start-1045 { grid-row-start: $ten-45; }
+.start-110 { grid-row-start: $eleven; }
+.start-1115 { grid-row-start: $eleven-15; }
+.start-1130 { grid-row-start: $eleven-30; }
+.start-1145 { grid-row-start: $eleven-45; }
+.start-120 { grid-row-start: $twelve; }
+.start-1215 { grid-row-start: $twelve-15; }
+.start-1230 { grid-row-start: $twelve-30; }
+.start-1245 { grid-row-start: $twelve-45; }
+.start-130 { grid-row-start: $thirteen; }
+.start-1315 { grid-row-start: $thirteen-15; }
+.start-1330 { grid-row-start: $thirteen-30; }
+.start-1345 { grid-row-start: $thirteen-45; }
+.start-1400 { grid-row-start: $fourteen; }
+.start-1415 { grid-row-start: $fourteen-15; }
+.start-1430 { grid-row-start: $fourteen-30; }
+.start-1445 { grid-row-start: $fourteen-45; }
+.start-150 { grid-row-start: $fifteen; }
+.start-1515 { grid-row-start: $fifteen-15; }
+.start-1530 { grid-row-start: $fifteen-30; }
+.start-1545 { grid-row-start: $fifteen-45; }
+.start-160 { grid-row-start: $sixteen; }
+.start-1615 { grid-row-start: $sixteen-15; }
+.start-1630 { grid-row-start: $sixteen-30; }
+.start-1645 { grid-row-start: $sixteen-45; }
+.start-170 { grid-row-start: $seventeen; }
+.start-1715 { grid-row-start: $seventeen-15; }
+.start-1730 { grid-row-start: $seventeen-30; }
+.start-1745 { grid-row-start: $seventeen-45; }
+.start-180 { grid-row-start: $eighteen; }
+.start-1815 { grid-row-start: $eighteen-15; }
+.start-1830 { grid-row-start: $eighteen-30; }
+.start-1845 { grid-row-start: $eighteen-45; }
+.start-19 { grid-row-start: $nineteen; }
+
+.end-90 { grid-row-end: $nine; }
+.end-915 { grid-row-end: $nine-15; }
+.end-930 { grid-row-end: $nine-30; }
+.end-945 { grid-row-end: $nine-45; }
+.end-100 { grid-row-end: $ten; }
+.end-1015 { grid-row-end: $ten-15; }
+.end-1030 { grid-row-end: $ten-30; }
+.end-1045 { grid-row-end: $ten-45; }
+.end-110 { grid-row-end: $eleven; }
+.end-1115 { grid-row-end: $eleven-15; }
+.end-1130 { grid-row-end: $eleven-30; }
+.end-1145 { grid-row-end: $eleven-45; }
+.end-120 { grid-row-end: $twelve; }
+.end-1215 { grid-row-end: $twelve-15; }
+.end-1230 { grid-row-end: $twelve-30; }
+.end-1245 { grid-row-end: $twelve-45; }
+.end-130 { grid-row-end: $thirteen; }
+.end-1315 { grid-row-end: $thirteen-15; }
+.end-1330 { grid-row-end: $thirteen-30; }
+.end-1345 { grid-row-end: $thirteen-45; }
+.end-1400 { grid-row-end: $fourteen; }
+.end-1415 { grid-row-end: $fourteen-15; }
+.end-1430 { grid-row-end: $fourteen-30; }
+.end-1445 { grid-row-end: $fourteen-45; }
+.end-150 { grid-row-end: $fifteen; }
+.end-1515 { grid-row-end: $fifteen-15; }
+.end-1530 { grid-row-end: $fifteen-30; }
+.end-1545 { grid-row-end: $fifteen-45; }
+.end-160 { grid-row-end: $sixteen; }
+.end-1615 { grid-row-end: $sixteen-15; }
+.end-1630 { grid-row-end: $sixteen-30; }
+.end-1645 { grid-row-end: $sixteen-45; }
+.end-170 { grid-row-end: $seventeen; }
+.end-1715 { grid-row-end: $seventeen-15; }
+.end-1730 { grid-row-end: $seventeen-30; }
+.end-1745 { grid-row-end: $seventeen-45; }
+.end-180 { grid-row-end: $eighteen; }
+.end-1815 { grid-row-end: $eighteen-15; }
+.end-1830 { grid-row-end: $eighteen-30; }
+.end-1845 { grid-row-end: $eighteen-45; }
+.end-190 { grid-row-end: $nineteen; }
+
+
+
+.title2 {
+  font-weight: $font-weight;
+  margin: 0;
+}
+
+.event {
+  border: 1px solid $font-color3;
+  border-radius: 5px;
+  padding: 0.5rem;
+  margin: 0 0.5rem;
+  background: $event-free;
+
+}
+
+.space,
+.date {
+  height: 60px
+}
+
+.reserved {
+  background: $event-reserved;
+  color: $font-color1;
+}
+
+.free {
+  background: $event-free;
+}
+
+
+.date {
+  display: flex;
+  gap: 1em;
+}
+.time-marker{
+  color: $font-color3;
+
+}
+
+.date-num {
+  font-size: 3rem;
+  font-weight: $font-weight;
+  display: inline;
+}
+
+.date-day {
+  display: inline;
+  font-size: 150%;
+  font-weight: 100;
+  color: $font-color3;
+}
+
+.topDatePanel{
+  background-color: $primary-background-color;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}

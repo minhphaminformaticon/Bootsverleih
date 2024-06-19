@@ -17,7 +17,11 @@ POST    /manage                     controllers.HomeController.submitBoatManagem
 +nocsrf
 POST    /login                      controllers.HomeController.submitLogin(request: Request)
 +nocsrf
+POST    /signup                     controllers.HomeController.submitSignUp(request: Request)
++nocsrf
 POST    /manage/boatconfiguration   controllers.HomeController.submitBoatConfiguration(request: Request)
++nocsrf
+POST    /admin/login                controllers.HomeController.submitAdmin(request: Request)
 
 
 GET     /reservation                controllers.HomeController.showReservation(request: Request)
@@ -32,6 +36,12 @@ GET     /manage                     controllers.HomeController.manage(request: R
 
 GET     /login                      controllers.HomeController.login(request: Request)
 
+GET     /coffee                     controllers.HomeController.coffee(request: Request)
+
+GET     /signup                     controllers.HomeController.signup(request: Request)
+
+GET     /signup/complete            controllers.HomeController.signUpComplete(request: Request)
+
 GET     /logout                     controllers.HomeController.logOut(request: Request)
 
 GET     /manage/boatconfiguration   controllers.HomeController.addingBoat(request: Request)
@@ -40,15 +50,18 @@ GET     /minh/manage/boatconfiguration/:id   controllers.HomeController.boatDele
 
 GET     /minh/reservation           controllers.HomeController.displayReservationsOnCalendar(request: Request)
 
+GET     /admin/view                 controllers.HomeController.adminCheckReservations(request: Request)
+
 GET     /aboutUs/pong               controllers.HomeController.pong(request: Request)
 
+GET     /admin                      controllers.HomeController.admin(request: Request)
 
+GET     /admin/login                controllers.HomeController.adminLogin(request: Request)
 
 # javascript routes
-GET     /javascript-routes          controllers.HomeController.javascriptRoutes(request: Request)
-GET     /javascript-routes-reservations         controllers.HomeController.javaScriptRoutesDisplayReservationsOnCalendar(request: Request)
-
-
+GET     /javascriptRoutes          controllers.HomeController.javascriptRoutes(request: Request)
+GET     /javascriptRoutesReservations         controllers.HomeController.javaScriptRoutesDisplayReservationsOnCalendar(request: Request)
+GET     /javascriptRoutesAdmin    controllers.HomeController.javaScriptRoutesAdminCalendar(request: Request)
 
 
 

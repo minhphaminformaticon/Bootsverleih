@@ -1,23 +1,21 @@
 package controllers;
 
+import actions.AdminAction;
 import actions.LoginAction;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mysql.cj.Session;
-import forms.Boat;
-import forms.BoatManagement;
-import forms.Login;
-import forms.ReservationForm;
+import forms.*;
 import io.ebeaninternal.server.expression.Op;
 import io.ebeaninternal.server.util.Str;
-import models.BoatManagementTable;
-import models.BoatTable;
-import models.ReservationRequests;
-import models.UserTable;
+import models.*;
 import models.finder.BoatFinder;
+import models.finder.ReservationFinder;
+import models.view.AdminViewAdapter;
 import models.view.BoatTableViewAdapter;
+import models.view.ReservationsViewAdapter;
 import play.data.Form;
 import play.data.FormFactory;
 import play.i18n.MessagesApi;
@@ -28,7 +26,9 @@ import play.twirl.api.Html;
 import javax.inject.Inject;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -102,6 +102,8 @@ public class HomeController extends Controller {
         return ok(views.html.showSubmittedReservation.render(reservationForm, submitForm, getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), true));
     }
 
+
+
     public Result submitBoatManagement(Http.Request request) throws FileNotFoundException {
         Form<BoatManagement> submitBoatManagement = formFactory
                 .form(BoatManagement.class)
@@ -126,7 +128,40 @@ public class HomeController extends Controller {
         }
         return ok(views.html.manage.render(getBoatTableViewAdapter(), submitBoatManagement, getNewReservationForm(), logged, request, messages.preferred(request), false));
     }
+    public Result submitAdmin(Http.Request request){
+        Form<AdminForm> adminFormForm = formFactory
+                .form(AdminForm.class)
+                .withDirectFieldAccess(true)
+                .bindFromRequest(request);
 
+        AdminTable adminTable = new AdminTable();
+        if (adminFormForm.hasErrors()){
+            return badRequest(views.html.adminLogin.render(adminFormForm, request, messages.preferred(request)));
+        }
+
+        return ok(views.html.employeeView.render(request, messages.preferred(request))).addingToSession(request, "admin", "admin");
+    }
+    public Result submitSignUp(Http.Request request){
+        Form<SignUp> signUpForm = formFactory
+                .form(SignUp.class)
+                .withDirectFieldAccess(true)
+                .bindFromRequest(request);
+
+        if (signUpForm.hasErrors()){
+            return badRequest(views.html.signup.render(signUpForm, request, messages.preferred(request)));
+        }
+
+        SignUp signUp = signUpForm.get();
+        UserTable userTable = new UserTable();
+        userTable.firstName = signUp.firstName;
+        userTable.lastName = signUp.lastName;
+        userTable.email = signUp.email;
+        userTable.number = signUp.phone;
+        userTable.save();
+
+
+        return ok(views.html.signUpComplete.render(getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false));
+    }
     public Result submitLogin(Http.Request request) throws FileNotFoundException {
         Form<Login> loginForm = formFactory
                 .form(Login.class)
@@ -137,17 +172,15 @@ public class HomeController extends Controller {
         if (loginForm.hasErrors()) {
             return badRequest(views.html.login.render(loginForm, request, messages.preferred(request)));
         }
-        Login loginData = loginForm.get();
-        UserTable userTable = new UserTable();
-        userTable.firstName = loginData.firstName;
-        userTable.lastName = loginData.lastName;
-        userTable.email = loginData.email;
-        userTable.number = loginData.phone;
-        userTable.save();
+
         System.out.println(request.session().get("desiredSite"));
         String value = String.valueOf(request.session().get("desiredSite"));
-        String shortenValue = value.substring(value.lastIndexOf("/"));
-
+        String shortenValue;
+        try {
+             shortenValue = value.substring(value.lastIndexOf("/"));
+        } catch (StringIndexOutOfBoundsException e){
+            shortenValue = "";
+        }
         switch (shortenValue) {
             case "/drinks]":
                 return ok(views.html.drinks.render(getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
@@ -162,7 +195,7 @@ public class HomeController extends Controller {
                 Form<Boat> boat = formFactory.form(Boat.class);
                 return ok(views.html.addingNewBoat.render(boat, getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false)).addingToSession(request, "logged", "hallo");
             default:
-                return ok(views.html.loginConfirmed.render(loginData, getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
+                return ok(views.html.loginConfirmed.render( getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
                         .addingToSession(request, "logged", "hallo");
         }
 
@@ -189,10 +222,23 @@ public class HomeController extends Controller {
         return ok(renderIndexView(request, reservationForm, getLogged(request), true));
     }
 
+    public Result signup(Http.Request request) {
+        Form<SignUp> signUpForm = formFactory.form(SignUp.class);
+        return ok(views.html.signup.render(signUpForm, request, messages.preferred(request)));
+    }
+    public Result signUpComplete(Http.Request request) {
+        Form<SignUp> signUpForm = formFactory.form(SignUp.class);
+        return ok(views.html.signUpComplete.render(getNewReservationForm(), getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), false));
+    }
     @With(LoginAction.class)
     public Result drinks(Http.Request request) {
 
         return ok(views.html.drinks.render(getNewReservationForm(), getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), false));
+    }
+
+    @With(LoginAction.class)
+    public Result coffee(Http.Request request){
+        return ok(views.html.coffee.render(getNewReservationForm(), getBoatTableViewAdapter(), getLogged(request), request, messages.preferred(request), false));
     }
 
     @With(LoginAction.class)
@@ -209,7 +255,15 @@ public class HomeController extends Controller {
         return ok(views.html.manage.render(getBoatTableViewAdapter(), boatManagementForm, getNewReservationForm(), getLogged(request), request, messages.preferred(request), false));
     }
 
+    @With(AdminAction.class)
+    public Result admin(Http.Request request) {
+        return ok(views.html.employeeView.render(request, messages.preferred(request)));
+    }
 
+    public Result adminLogin(Http.Request request){
+        Form<AdminForm> adminFormForm = formFactory.form(AdminForm.class);
+        return ok(views.html.adminLogin.render(adminFormForm, request, messages.preferred(request)));
+    }
 
     public Result login(Http.Request request) {
         Form<Login> loginForm = formFactory.form(Login.class);
@@ -265,15 +319,33 @@ public class HomeController extends Controller {
         ).as(Http.MimeTypes.JAVASCRIPT);
     }
 
+    public Result javaScriptRoutesAdminCalendar(Http.Request request){
+        return ok(JavaScriptReverseRouter.create(
+                "javaScriptRoutesAdminCalendar",
+                "xhr",
+                request.host(),
+                routes.javascript.HomeController.adminCheckReservations()
+
+            )
+        ).as(Http.MimeTypes.JAVASCRIPT);
+    }
+
     public Result displayReservationsOnCalendar(Http.Request request){
         String jsonReservations = "";
 
         try {
-
-//            for (int i = 0;ReservationRequests.FINDER.findReservations().size() > i; i++){
-//                jsonReservations = new ObjectMapper().writeValueAsString(ReservationRequests.FINDER.findReservations().get(i));
-//            }
               jsonReservations = new ObjectMapper().writeValueAsString(ReservationRequests.FINDER.findReservations());
+        } catch (JsonProcessingException jpe){
+            System.out.println(jpe);
+        }
+        return ok(jsonReservations);
+    }
+
+    public Result adminCheckReservations(Http.Request request){
+        String jsonReservations = "";
+
+        try {
+            jsonReservations = new ObjectMapper().writeValueAsString(ReservationRequests.FINDER.findCurrentReservations());
         } catch (JsonProcessingException jpe){
             System.out.println(jpe);
         }
@@ -327,6 +399,20 @@ public class HomeController extends Controller {
         }
         return boatTableViewAdapterList;
     }
+
+    private List<ReservationsViewAdapter> getReservationViewAdapter(){
+        ReservationFinder finder = new ReservationFinder();
+
+        List<ReservationsViewAdapter> viewAdapter = new ArrayList<>();
+
+        List<ReservationRequests> r = finder.findReservations();
+        for (int i = 0; i < r.size(); i++){
+            ReservationsViewAdapter reservationsViewAdapter = new ReservationsViewAdapter(r.get(i));
+            viewAdapter.add(reservationsViewAdapter);
+        }
+        return viewAdapter;
+    }
+
 
     private String getLogged(Http.Request request) {
         Optional session = request.session().get("logged");

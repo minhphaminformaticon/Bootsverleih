@@ -23,10 +23,7 @@ public class Boat implements Constraints.Validatable<List<ValidationError>> {
     @Override
     public List<ValidationError> validate() {
         BoatFinder boatFinder = new BoatFinder();
-
         List<BoatTable> boatList = boatFinder.findBoats();
-
-
         List<ValidationError> validationErrors = new ArrayList<>();
             if (model == null || Objects.equals(model, "")){
                 validationErrors.add(new ValidationError("model", "you need to enter the boat's model."));
@@ -42,22 +39,17 @@ public class Boat implements Constraints.Validatable<List<ValidationError>> {
                     validationErrors.add(new ValidationError("kfz", "The vehicle license plate is already placed."));
                 }
             }
-
         return validationErrors;
     }
-
     public String getModel() {
         return model;
     }
-
     public void setModel(String model) {
         this.model = model;
     }
-
     public String getKfz() {
         return kfz;
     }
-
     public void setKfz(String kfz) {
         this.kfz = kfz;
     }

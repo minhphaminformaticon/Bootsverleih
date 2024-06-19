@@ -52,49 +52,22 @@
 
         </p>
         <div>
-            <a href="@controllers.routes.HomeController.addingBoat()" class="button2">+</a>
+            <a href="@controllers.routes.HomeController.addingBoat()" class="button2" style="padding: 10px 20px;
+                width: 50px;
+                background-color: #4CAF50;
+                color: #f3f3f3;
+                text-decoration: none;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                text-align: center;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;">+</a>
         </div>
     </section>
     <section style="min-height: 70vh">
-        <div style="left: 43%;
-            position: absolute;
-            width: 15%;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); ">
-            @helper.form(routes.HomeController.submitBoatManagement()){
 
-                @helper.inputRadioGroup(
-                    boatManagement("typeOfBoat"),
-                    options = options("Rowing Boat" -> "Rowing Boat" , "Motor Boat" -> "Motor Boat") ,
-                    Symbol("_label") -> "type of boat",
-                    Symbol("_showConstraints") -> false
-                )
-                @helper.input(
-                    boatManagement("numberOfSeats"),
-                    Symbol("_label") -> "number of seats",
-                    Symbol("_showConstraints") -> false
-                ) {(id, name, value, args) =>
-                    <input class="numberInputField" type="number" min="1" max="8" id="@id" value="@value" name= "@name" @toHtmlArgs(args)>
-                }
-                @helper.input(
-                    boatManagement("numberOfHorsePower"),
-                    Symbol("_label") -> "number of horsepower",
-                    Symbol("_showConstraints") -> false
-                ) {(id, name, value, args) =>
-                    <input class="numberInputField" type="number" min="1" max="15" id="@id" value="@value" name= "@name" @toHtmlArgs(args)>
-                }
-                <button class="btn" type="submit">
-                    Send
-                </button>
-                <button class="btn" type="reset">
-                    Reset
-                </button>
-            }
-
-        </div>
     </section>
     @footer()
 

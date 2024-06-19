@@ -1,3 +1,4 @@
+
 @import views.html.templates.header
 @import forms.ReservationForm
 @import play.mvc.Http.Request
@@ -6,17 +7,10 @@
 @( reservationForm: Form[ReservationForm], loginIcon: String, boatTableViewAdapterList: List[BoatTableViewAdapter])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
 
 @main("Bootsverleih - MAKO"){
-    <head>
-        <style>
-            .loginTitle{
-
-            }
-        </style>
-    </head>
     @header(reservationForm, loginIcon, boatTableViewAdapterList)
     <div style="min-height: 40vh"></div>
     <h1 class="loginTitle">
-        YOU'RE LOGGED IN
+        YOU'RE SIGNED UP
     </h1>
 
 }

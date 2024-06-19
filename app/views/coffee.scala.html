@@ -1,0 +1,27 @@
+@import views.html.templates.header
+@import play.mvc.Http.Request
+@import forms.ReservationForm
+@import models.view.BoatTableViewAdapter
+
+@(reservationForm: Form[ReservationForm], boatTableViewAdapterList: List[BoatTableViewAdapter], loginString: String)(implicit request: Request, messages: play.i18n.Messages, showLogin: Boolean)
+
+
+<html>
+    @header(reservationForm, loginString, boatTableViewAdapterList)( request, messages, showLogin)
+
+    <body>
+        <section>
+            <div>
+
+            </div>
+        </section>
+    </body>
+</html>
+
+
+
+
+
+
+
+

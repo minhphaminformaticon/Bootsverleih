@@ -1,7 +1,7 @@
-@import forms.Login
+@import forms.SignUp
 @import play.mvc.Http.Request
 
-@(login: Form[Login])(implicit request: Request, messages: play.i18n.Messages)
+@(login: Form[SignUp])(implicit request: Request, messages: play.i18n.Messages)
 
 @main("Bootsverleih - MAKO"){
     <header>
@@ -18,8 +18,8 @@
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); ">
-            <h1 style="color: #333333">LOGIN</h1>
-            @helper.form(routes.HomeController.submitLogin()){
+            <h1 style="color: #333333">Sign Up</h1>
+            @helper.form(routes.HomeController.submitSignUp()){
                 @helper.inputText(
                     login("firstName"),
                     Symbol("_label") -> "first name",
@@ -40,15 +40,14 @@
                     Symbol("_label") -> "number",
                     Symbol("_showConstraints") -> false
                 )
-                <button class="btn" type="submit">Login</button>
+                <button class="btn" type="submit">Sign Up</button>
 
                 <button class="btn" type="reset">
                     Reset
                 </button>
 
                 <a class="btn" id="showReservation" href="@controllers.routes.HomeController.admin()" >Admin</a>
-
-                <a class="link" href="@controllers.routes.HomeController.signup()">Don't have an account? sign up here</a>
+                <a class="link" href="@controllers.routes.HomeController.login()">You have an account? Log in here.</a>
 
             }
         </div>

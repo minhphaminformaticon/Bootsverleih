@@ -8,13 +8,13 @@ public class UserViewAdapter {
     public String firstName;
     public String lastName;
     public String email;
-    public String number;
+    public String password;
 
     public UserViewAdapter(UserTable userTable){
         this.id = userTable.userID;
         this.firstName = userTable.firstName;
         this.lastName = userTable.lastName;
         this.email = userTable.email;
-        this.number = userTable.number;
+        this.password = userTable.password;
     }
 }

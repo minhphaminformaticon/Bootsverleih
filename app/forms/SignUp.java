@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class SignUp implements Constraints.Validatable<List<ValidationError>>{
     public String firstName;
     public String lastName;
-    public String phone;
+    public String password;
     public String email;
     private Boolean isEmailValid;
     private Boolean isNumberValid;
@@ -46,9 +46,9 @@ public class SignUp implements Constraints.Validatable<List<ValidationError>>{
         } else if (!matcher.matches()) {
             validationErrors.add(new ValidationError("email", "Email isn't valid"));
         }
-        if (phone == null || Objects.equals(phone, "")){
+        if (password == null || Objects.equals(password, "")){
             validationErrors.add(new ValidationError("phone", "you need to enter your number"));
-        } else if (!phone.matches("^\\+\\d{11}$")) {
+        } else if (!password.matches("^[A-Za-z]{8,}")) {
             validationErrors.add(new ValidationError("phone", "The number isn't valid"));
         }
             isEmailValid = true;
@@ -57,11 +57,11 @@ public class SignUp implements Constraints.Validatable<List<ValidationError>>{
                 userViewAdapter = new UserViewAdapter(userTables.get(i));
 
                 if (email != null) {
-                    if (phone != null) {
+                    if (password != null) {
                         if (email.equals(userViewAdapter.email)) {
                             isEmailValid = false;
                         }
-                        if (phone.equals(userViewAdapter.number)) {
+                        if (password.equals(userViewAdapter.password)) {
                             isNumberValid = true;
                         }
                         if (isEmailValid && isNumberValid) {
@@ -98,12 +98,12 @@ public class SignUp implements Constraints.Validatable<List<ValidationError>>{
         this.lastName = lastName;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPassword(String password) {
+        this.password = password;
     }
     public String getEmail() {
         return email;

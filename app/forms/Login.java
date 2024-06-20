@@ -6,26 +6,31 @@ import models.view.UserViewAdapter;
 import play.data.validation.Constraints;
 import play.data.validation.ValidationError;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @Constraints.Validate
 public class Login implements Constraints.Validatable<List<ValidationError>>{
 
-    public String firstName;
-    public String lastName;
-    public String phone;
+
+    public String password;
     public String email;
 
 
     private Boolean isEmailValid;
-    private Boolean isNumberValid;
-    private Boolean isFirstNameValid;
-    private Boolean isLastNameValid;
+    private Boolean isPasswordValid;
 
     public UserViewAdapter userViewAdapter;
 
@@ -39,69 +44,39 @@ public class Login implements Constraints.Validatable<List<ValidationError>>{
         List<ValidationError> validationErrors = new ArrayList<>();
         Pattern mailPattern = Pattern.compile("\\S+@\\S+(\\.ch|\\.com)");
         Matcher matcher = mailPattern.matcher(email);
-        if (firstName == null || Objects.equals(firstName, "")) {
-            validationErrors.add(new ValidationError("firstName", "you need to enter your first name"));
-        } else if (!firstName.matches("^[A-Za-zäöüÄÖÜ][a-zöäü]{3,20}")) {
-            validationErrors.add(new ValidationError("firstName", "the first name isn't valid"));
-        }
-        if (lastName == null || Objects.equals(lastName, "")) {
-            validationErrors.add(new ValidationError("lastName", "you need to enter your last name"));
-        } else if (!lastName.matches("^[A-Za-zäöüÄÖÜ][a-zöäü]{3,20}")) {
-            validationErrors.add(new ValidationError("lastName", "the last name isn't valid"));
-        }
         if (email == null || Objects.equals(email, "")){
             validationErrors.add(new ValidationError("email", "you need to enter your email"));
         } else if (!matcher.matches()) {
             validationErrors.add(new ValidationError("email", "Email isn't valid"));
         }
-        if (phone == null || Objects.equals(phone, "")){
-            validationErrors.add(new ValidationError("phone", "you need to enter your number"));
-        } else if (!phone.matches("^\\+\\d{11}$")) {
-            validationErrors.add(new ValidationError("phone", "The number isn't valid"));
+        if (password == null || Objects.equals(password, "")){
+            validationErrors.add(new ValidationError("password", "you need to enter your number"));
+        } else if (!password.matches("^[A-Za-z]{8,}")) {
+            validationErrors.add(new ValidationError("password", "The number isn't valid"));
         }
 
         if (userTables.isEmpty()){
-            validationErrors.add(new ValidationError("firstName", "There's no User, Please Sign up"));
+            validationErrors.add(new ValidationError("password", "There's no User, Please Sign up"));
         } else {
             for (int i = 0; i < userTables.size(); i++){
                 userViewAdapter = new UserViewAdapter(userTables.get(i));
-                isFirstNameValid = false;
-                isLastNameValid = false;
                 isEmailValid = false;
-                isNumberValid = false;
-
-                if (firstName != null) {
-                    if (lastName != null) {
+                isPasswordValid = false;
                             if (email != null) {
-                                if (phone != null) {
-                                    if (!firstName.equals(userViewAdapter.firstName)) {
-                                        isFirstNameValid = false;
-                                    }
-
-                                    if (!lastName.equals(userViewAdapter.lastName)) {
-                                        isFirstNameValid = false;
-                                    }
-
-                                    if (!email.equals(userViewAdapter.email)) {
-                                        isFirstNameValid = false;
-                                    }
-
-                                    if (!phone.equals(userViewAdapter.number)) {
-                                        isFirstNameValid = false;
-                                    }
-                                    if (firstName.equals(userViewAdapter.firstName)) {
-                                        isFirstNameValid = true;
-                                    }
-                                    if (lastName.equals(userViewAdapter.lastName)) {
-                                        isLastNameValid = true;
-                                    }
-                                    if (email.equals(userViewAdapter.email)) {
-                                        isEmailValid = true;
-                                    }
-                                    if (phone.equals(userViewAdapter.number)) {
-                                        isNumberValid = true;
-                                    }
-                                    if (isFirstNameValid && isLastNameValid && isEmailValid && isNumberValid) {
+                                if (password != null) {
+                                    try{
+                                        String passwordInHash = toHexString(getSHA(password));
+                                        if (email.equals(userViewAdapter.email)) {
+                                            isEmailValid = true;
+                                        }
+                                        if (passwordInHash.equals(userViewAdapter.password)) {
+                                            isPasswordValid = true;
+                                        }
+                                        if (isEmailValid && isPasswordValid) {
+                                            break;
+                                        }
+                                    }catch(NoSuchAlgorithmException e){
+                                        validationErrors.add(new ValidationError("password", "ERROR"));
                                         break;
                                     }
                                 } else {
@@ -110,52 +85,27 @@ public class Login implements Constraints.Validatable<List<ValidationError>>{
                             }else {
                                 break;
                             }
-                    } else {
-                        break;
-                    }
-                } else {
-                    break;
-                }
-            }
-            if (!isFirstNameValid){
-                validationErrors.add(new ValidationError("firstName", "The first name is incorrect."));
-            }
-            if (!isLastNameValid){
-                validationErrors.add(new ValidationError("lastName", "The last name is incorrect"));
             }
             if (!isEmailValid){
                 validationErrors.add(new ValidationError("email", "The email is incorrect."));
             }
-            if (!isNumberValid){
-                validationErrors.add(new ValidationError("phone", "The number is incorrect"));
+            if (!isPasswordValid){
+                validationErrors.add(new ValidationError("password", "The password is incorrect"));
             }
 
         }
 
         return validationErrors;
     }
-    public String getFirstName() {
-        return firstName;
+
+
+
+    public String getPassword() {
+        return password;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPassword(String password) {
+        this.password = password;
     }
     public String getEmail() {
         return email;
@@ -163,6 +113,25 @@ public class Login implements Constraints.Validatable<List<ValidationError>>{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public static byte[] getSHA(String input) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+        return md.digest(input.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static String toHexString(byte[] hash){
+
+        BigInteger number = new BigInteger(1, hash);
+
+        StringBuilder hexString = new StringBuilder(number.toString(16));
+
+        while(hexString.length()  < 64){
+            hexString.insert(0, '0');
+        }
+
+        return hexString.toString();
     }
 }
 

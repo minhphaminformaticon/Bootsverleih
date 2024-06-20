@@ -21,23 +21,13 @@
             <h1 style="color: #333333">LOGIN</h1>
             @helper.form(routes.HomeController.submitLogin()){
                 @helper.inputText(
-                    login("firstName"),
-                    Symbol("_label") -> "first name",
-                    Symbol("_showConstraints") -> false
-                )
-                @helper.inputText(
-                    login("lastName"),
-                    Symbol("_label") -> "last name",
-                    Symbol("_showConstraints") -> false
-                )
-                @helper.inputText(
                     login("email"),
                     Symbol("_label") -> "email",
                     Symbol("_showConstraints") -> false
                 )
                 @helper.inputText(
-                    login("phone"),
-                    Symbol("_label") -> "number",
+                    login("password"),
+                    Symbol("_label") -> "password",
                     Symbol("_showConstraints") -> false
                 )
                 <button class="btn" type="submit">Login</button>

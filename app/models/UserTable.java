@@ -3,7 +3,6 @@ package models;
 import io.ebean.Model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -22,8 +21,8 @@ public class UserTable extends Model {
     @Column(name = "email")
     public String email;
 
-    @Column(name = "phone")
-    public String number;
+    @Column(name = "passwort")
+    public String password;
 
     public UserTable(String firstName) {
         this.firstName = firstName;

@@ -3,17 +3,11 @@ package controllers;
 import actions.AdminAction;
 import actions.LoginAction;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.mysql.cj.Session;
 import forms.*;
-import io.ebeaninternal.server.expression.Op;
-import io.ebeaninternal.server.util.Str;
 import models.*;
 import models.finder.BoatFinder;
 import models.finder.ReservationFinder;
-import models.view.AdminViewAdapter;
 import models.view.BoatTableViewAdapter;
 import models.view.ReservationsViewAdapter;
 import play.data.Form;
@@ -25,12 +19,15 @@ import play.twirl.api.Html;
 
 import javax.inject.Inject;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -151,13 +148,19 @@ public class HomeController extends Controller {
             return badRequest(views.html.signup.render(signUpForm, request, messages.preferred(request)));
         }
 
-        SignUp signUp = signUpForm.get();
-        UserTable userTable = new UserTable();
-        userTable.firstName = signUp.firstName;
-        userTable.lastName = signUp.lastName;
-        userTable.email = signUp.email;
-        userTable.number = signUp.phone;
-        userTable.save();
+        try{
+            SignUp signUp = signUpForm.get();
+            UserTable userTable = new UserTable();
+            userTable.firstName = signUp.firstName;
+            userTable.lastName = signUp.lastName;
+            userTable.email = signUp.email;
+            userTable.password = toHexString(getSHA(signUp.password));
+            userTable.save();
+        }catch(NoSuchAlgorithmException e){
+            return badRequest(views.html.signup.render(signUpForm, request, messages.preferred(request)));
+        }
+
+
 
 
         return ok(views.html.signUpComplete.render(getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false));
@@ -422,6 +425,25 @@ public class HomeController extends Controller {
             logged = "\uD83D\uDD13";
         }
         return logged;
+    }
+
+    public static byte[] getSHA(String input) throws NoSuchAlgorithmException{
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+        return md.digest(input.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static String toHexString(byte[] hash){
+
+        BigInteger number = new BigInteger(1, hash);
+
+        StringBuilder hexString = new StringBuilder(number.toString(16));
+
+        while(hexString.length()  < 64){
+            hexString.insert(0, '0');
+        }
+
+        return hexString.toString();
     }
 
 }

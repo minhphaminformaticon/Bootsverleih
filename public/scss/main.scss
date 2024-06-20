@@ -130,95 +130,95 @@ h4 {
   background-color: $form-background-color;
 }
 
+
 header {
   background: none;
   padding-bottom: 30px;
 }
-ul {
-  list-style-type: none;
-  margin-bottom: 10px;
-  overflow: hidden;
-  border: $primary-background-color 2px;
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 60%;
-  z-index: 100;
-  background: none;
-  mix-blend-mode: difference;
+  ul {
+    list-style-type: none;
+    margin-bottom: 10px;
+    overflow: hidden;
+    border: $primary-background-color 2px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 60%;
+    z-index: 100;
+    background: none;
+    mix-blend-mode: difference;
 
-}
+  }
 
-li {
-  float: left;
-}
+  li {
+    float: left;
+  }
 
-li a {
-  display: block;
-  width: 100%;
-  color: $font-color1;
-  text-align: center;
-  padding: 2px 10px;
-  text-decoration: none;
-  font-family: gunsan, Serif;
-  opacity: $opacity-full;
-  transition: $transition;
-  mix-blend-mode: difference;
-  z-index: 100;
-}
+  li a {
+    display: block;
+    width: 100%;
+    color: $font-color1;
+    text-align: center;
+    padding: 2px 10px;
+    text-decoration: none;
+    font-family: gunsan, Serif;
+    opacity: $opacity-full;
+    transition: $transition;
+    mix-blend-mode: difference;
+    z-index: 100;
+  }
 
-li a:hover {
-  padding: 12px 18px;
-  text-decoration: underline;
-  transition: 0.4s;
-  cursor: pointer;
-}
+  li a:hover {
+    padding: 12px 18px;
+    text-decoration: underline;
+    transition: 0.4s;
+    cursor: pointer;
+  }
 
-a:hover{
-  opacity: $opacity-full;
-  text-decoration: underline;
-  transition: 0.4s;
-  cursor: pointer;
-}
+  a:hover{
+    opacity: $opacity-full;
+    text-decoration: underline;
+    transition: 0.4s;
+    cursor: pointer;
+  }
 
-a {
-  display: block;
-  width: 60%;
-  padding-left: 38%;
-  font-size: 200%;
-  color: $font-color1;
-  text-align: center;
-  text-decoration: none;
-  font-family: gunsan, Serif;
-  background: none;
-  opacity: 30%;
-  transition:  $transition;
-  mix-blend-mode: difference;
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+/Edge */
-  user-select: none; /* Standard */
-}
+  a {
+    display: block;
+    width: 60%;
+    padding-left: 38%;
+    font-size: 200%;
+    color: $font-color1;
+    text-align: center;
+    text-decoration: none;
+    font-family: gunsan, Serif;
+    background: none;
+    opacity: 30%;
+    transition:  $transition;
+    mix-blend-mode: difference;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+  }
 
 
-b {
-  padding: 20px;
-}
-dd.error{
-  color: $red;
-}
+  b {
+    padding: 20px;
+  }
+  dd.error{
+    color: $red;
+  }
 
-dt{
-  font-family:serif;
-}
+  dt{
+    font-family:serif;
+  }
 
-html{
-  scroll-behavior: smooth;
-}
-.informativeText{
-  padding-left: 20px;
-  color: $font-color1;
-  font-family: gunsan, serif;
+  html{
+    scroll-behavior: smooth;
+  }
+  .informativeText{
+    padding-left: 20px;
+    color: $font-color1;
   font-size: 17px;
 }
 .images{

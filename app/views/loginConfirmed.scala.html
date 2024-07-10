@@ -1,20 +1,136 @@
 @import views.html.templates.header
 @import forms.ReservationForm
 @import play.mvc.Http.Request
-@import forms.Login
+@import forms.ChangeNames
+@import forms.ChangePassword
+
 @import models.view.BoatTableViewAdapter
-@( reservationForm: Form[ReservationForm], loginIcon: String, boatTableViewAdapterList: List[BoatTableViewAdapter])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
+@import models.view.UserViewAdapter
+@(userViewAdapter: UserViewAdapter, changeNames: Form[ChangeNames], changePassword: Form[ChangePassword], reservationForm: Form[ReservationForm], loginIcon: String, boatTableViewAdapterList: List[BoatTableViewAdapter])(implicit request: Request, messages: play.i18n.Messages, showReservation : Boolean)
 
-@main("Bootsverleih - MAKO"){
-    <head>
-        <style>
-            .loginTitle{
-
-            }
-        </style>
-    </head>
+@main("Bootsverleih - MAKO") {
     @header(reservationForm, loginIcon, boatTableViewAdapterList)
-    <div style="min-height: 40vh"></div>
+    @if(userViewAdapter.firstName == "" && userViewAdapter.lastName == ""){
+        <div style="min-height: 20vh"></div>
+    } else {
+        <div style="min-height: 20vh">
+            <div>
+                <h1>Welcome @userViewAdapter.firstName @userViewAdapter.lastName</h1>
+            </div>
+        </div>
+    }
+    <div style="min-height: 40vh">
+        <div class="profilePage">
+            <div class="flexBox dropdownContainer">
+                <button onclick="toggleForm('changeNamesForm', 'saveText')">Change First/ Last Name</button>
+                <div id="changeNamesForm" class="dropdown">
+                    <div class="flexBoxProfile">
+                    @helper.form(routes.HomeController.changeNames()) {
+                        @helper.inputText(
+                            changeNames("newFirstName"),
+                            Symbol("_label") -> "New First Name",
+                            Symbol("_showConstraints") -> false
+                        )
+                        @helper.inputText(
+                            changeNames("newLastName"),
+                            Symbol("_label") -> "New Last Name",
+                            Symbol("_showConstraints") -> false
+                        )
+                        <button class="btn" type="button" onclick="save('save1', 'saveText')">Save</button>
+                        <button class="btn" type="reset">Reset</button>
+                        <h3 id="saveText"></h3>
+                        <div id="save1" class="save">
+                            <button type="submit">Yes</button>
+                            <button type="button" onclick="closeForm('changeNamesForm', 'saveText')">No</button>
+                        </div>
+                    }
+                    </div>
+                </div>
+                <button type="button" onclick="toggleForm('changePasswordForm', 'saveText1')">Change Password</button>
+                <div id="changePasswordForm" class="dropdown">
+                @helper.form(routes.HomeController.changePassword()) {
+                    @helper.inputPassword(
+                        changePassword("password"),
+                        Symbol("_label") -> "New Password",
+                        Symbol("_showConstraints") -> false
+                    )
+                    @helper.inputPassword(
+                        changePassword("passwordAgain"),
+                        Symbol("_label") -> "Enter Password again",
+                        Symbol("_showConstraints") -> false
+                    )
+                    <button class="btn" type="button" onclick="save('save2', 'saveText1')">Save</button>
+                    <button class="btn" type="reset">Reset</button>
+                    <h3 id="saveText1"></h3>
+                    <div id="save2" class="save">
+                        <button type="submit">Yes</button>
+                        <button type="button" onclick="closeForm('changePasswordForm', 'saveText1')">No</button>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+        <a href="@controllers.routes.HomeController.logOut()">Log Out</a>
+    </div>
 
+    <script>
+            function toggleForm(changeForm, saveText) {
+                const form = document.getElementById(changeForm);
+                form.classList.toggle("show");
+                document.getElementById(saveText).innerHTML = "";
+            }
 
+            function closeForm(changeForm, saveText) {
+                document.getElementById(changeForm).classList.remove("show");
+                document.getElementById(saveText).innerHTML = "";
+            }
+
+            function save(save, saveText) {
+                const form = document.getElementById(save);
+                form.classList.toggle("show");
+                document.getElementById(saveText).innerHTML = "do you want to save?";
+            }
+    </script>
+
+    <style>
+            .dropdownContainer {
+                position: relative;
+            }
+
+            .dropdown {
+                display: none;
+                position: absolute;
+                background-color: #f1f1f1;
+                padding: 10px;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                z-index: 1;
+            }
+
+            .save {
+                display: none;
+                padding: 10px;
+            }
+
+            .show {
+                display: block;
+            }
+
+            .flexBoxProfile {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #saveText, #saveText1 {
+                margin: 0;
+            }
+
+            .profilePage {
+                min-height: 50px;
+            }
+
+            .btn {
+                margin-top: 10px;
+            }
+    </style>
 }

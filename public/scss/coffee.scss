@@ -134,5 +134,21 @@ html {
   box-sizing: border-box;
 }
 
+.stickyHeader {
+  position: fixed;
+  top: 0;
+  width: 40%;
+  mix-blend-mode: difference;
+  padding: 10px;
+  z-index: 100;
+  opacity: $opacity-full;
+  background: none;
+}
+
+
+.stickyHeaderTransition {
+  transition:  $transition;
+}
+
 
 

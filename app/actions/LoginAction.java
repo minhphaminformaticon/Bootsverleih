@@ -13,8 +13,7 @@ import java.util.concurrent.CompletionStage;
 public class LoginAction extends play.mvc.Action.Simple {
     public CompletionStage<Result> call(Http.Request req) {
         System.out.println("Calling action for request: " + req.toString());
-        System.out.println(req.session().get("logged"));
-        Optional session = req.session().get("logged");
+        Optional session = req.getCookie("LoginInformation");
         if(session.isPresent()){
             return delegate.call(req);
         } else {

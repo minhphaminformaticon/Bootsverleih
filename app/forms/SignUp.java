@@ -19,7 +19,7 @@ public class SignUp implements Constraints.Validatable<List<ValidationError>>{
     public String password;
     public String email;
     private Boolean isEmailValid;
-    private Boolean isNumberValid;
+    private Boolean isPasswordValid;
     public UserViewAdapter userViewAdapter;
 
     @Override
@@ -31,12 +31,12 @@ public class SignUp implements Constraints.Validatable<List<ValidationError>>{
         List<ValidationError> validationErrors = new ArrayList<>();
         if (firstName == null || Objects.equals(firstName, "")) {
             validationErrors.add(new ValidationError("firstName", "you need to enter your first name"));
-        } else if (!firstName.matches("^[A-Za-zäöüÄÖÜ][a-zöäü]{3,20}")) {
+        } else if (!firstName.matches("^[A-Za-zäöüÄÖÜ][a-zöäü]{2,20}")) {
             validationErrors.add(new ValidationError("firstName", "the first name isn't valid"));
         }
         if (lastName == null || Objects.equals(lastName, "")) {
             validationErrors.add(new ValidationError("lastName", "you need to enter your last name"));
-        } else if (!lastName.matches("^[A-Za-zäöüÄÖÜ][a-zöäü]{3,20}")) {
+        } else if (!lastName.matches("^[A-Za-zäöüÄÖÜ][a-zöäü]{2,20}")) {
             validationErrors.add(new ValidationError("lastName", "the last name isn't valid"));
         }
         Pattern mailPattern = Pattern.compile("\\S+@\\S+(\\.ch|\\.com)");
@@ -47,37 +47,38 @@ public class SignUp implements Constraints.Validatable<List<ValidationError>>{
             validationErrors.add(new ValidationError("email", "Email isn't valid"));
         }
         if (password == null || Objects.equals(password, "")){
-            validationErrors.add(new ValidationError("phone", "you need to enter your number"));
-        } else if (!password.matches("^[A-Za-z]{8,}")) {
-            validationErrors.add(new ValidationError("phone", "The number isn't valid"));
+            validationErrors.add(new ValidationError("password", "you need to enter your password"));
+        } else if (!password.matches("^[A-Za-z0-9]{8,20}")) {
+            validationErrors.add(new ValidationError("password", "The Password isn't valid, password must contain between 8 - 20 characters"));
         }
-            isEmailValid = true;
-            isNumberValid = true;
-            for (int i = 0; i < userTables.size(); i++) {
-                userViewAdapter = new UserViewAdapter(userTables.get(i));
-
-                if (email != null) {
-                    if (password != null) {
-                        if (email.equals(userViewAdapter.email)) {
-                            isEmailValid = false;
-                        }
-                        if (password.equals(userViewAdapter.password)) {
-                            isNumberValid = true;
-                        }
-                        if (isEmailValid && isNumberValid) {
+                isEmailValid = true;
+                isPasswordValid = true;
+                if (firstName != null && lastName != null){
+                    for (int i = 0; i < userTables.size(); i++) {
+                        userViewAdapter = new UserViewAdapter(userTables.get(i));
+                        if (email != null) {
+                            if (password != null) {
+                                if (email.equals(userViewAdapter.email)) {
+                                    isEmailValid = false;
+                                }
+                                if (password.equals(userViewAdapter.password)) {
+                                    isPasswordValid = false;
+                                }
+                                if (isEmailValid && isPasswordValid) {
+                                    break;
+                                }
+                            } else {
+                                break;
+                            }
+                        } else {
                             break;
                         }
-                    } else {
-                        break;
                     }
-                } else {
-                    break;
                 }
-            }
             if (!isEmailValid) {
                 validationErrors.add(new ValidationError("email", "the email is already in use"));
             }
-            if (!isNumberValid) {
+            if (!isPasswordValid) {
                 validationErrors.add(new ValidationError("phone", "The number is already in use"));
             }
         return validationErrors;

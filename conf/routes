@@ -22,6 +22,10 @@ POST    /signup                     controllers.HomeController.submitSignUp(requ
 POST    /manage/boatconfiguration   controllers.HomeController.submitBoatConfiguration(request: Request)
 +nocsrf
 POST    /admin/login                controllers.HomeController.submitAdmin(request: Request)
++nocsrf
+POST    /login/profile/changenames  controllers.HomeController.changeNames(request :Request)
++nocsrf
+POST    /login/profile/changepassword controllers.HomeController.changePassword(request :Request)
 
 
 GET     /reservation                controllers.HomeController.showReservation(request: Request)
@@ -42,7 +46,10 @@ GET     /signup                     controllers.HomeController.signup(request: R
 
 GET     /signup/complete            controllers.HomeController.signUpComplete(request: Request)
 
+GET     /login/profile                     controllers.HomeController.loginProfile(request: Request)
+
 GET     /logout                     controllers.HomeController.logOut(request: Request)
+
 
 GET     /manage/boatconfiguration   controllers.HomeController.addingBoat(request: Request)
 

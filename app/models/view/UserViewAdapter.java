@@ -17,4 +17,11 @@ public class UserViewAdapter {
         this.email = userTable.email;
         this.password = userTable.password;
     }
+
+    public UserViewAdapter(){
+        this.firstName = "-";
+        this.lastName = "-";
+        this.email = "-";
+        this.password = "-";
+    }
 }

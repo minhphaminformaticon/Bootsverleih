@@ -17,4 +17,5 @@ public class UserFinder extends Finder<String, UserTable> {
     public UserTable getID(int id){
         return query().where().eq("id", id).findOne();
     }
+
 }

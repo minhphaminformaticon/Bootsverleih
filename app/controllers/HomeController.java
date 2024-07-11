@@ -220,20 +220,22 @@ public class HomeController extends Controller {
         }
         switch (shortenValue) {
             case "/drinks]":
-                return ok(views.html.drinks.render(getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
+                return redirect(routes.HomeController.drinks())
                         .withCookies(Http.Cookie.builder("LoginInformation", getLoginInformation()).withMaxAge(Duration.ofDays(15)).build());
             case "/aboutUs]":
-                return ok(views.html.aboutUs.render(getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
+                return redirect(routes.HomeController.aboutUs())
                         .withCookies(Http.Cookie.builder("LoginInformation", getLoginInformation()).withMaxAge(Duration.ofDays(15)).build());
             case "/manage]":
-                return ok(views.html.manage.render(getBoatTableViewAdapter(), getBoatManagementForm(), getNewReservationForm(), "🔐", request, messages.preferred(request), false))
+                return redirect(routes.HomeController.manage())
                         .withCookies(Http.Cookie.builder("LoginInformation", getLoginInformation()).withMaxAge(Duration.ofDays(15)).build());
             case "/manage/configuration]":
-                Form<Boat> boat = formFactory.form(Boat.class);
-                return ok(views.html.addingNewBoat.render(boat, getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
+                return redirect(routes.HomeController.addingBoat())
+                        .withCookies(Http.Cookie.builder("LoginInformation", getLoginInformation()).withMaxAge(Duration.ofDays(15)).build());
+            case "/coffee]":
+                return redirect(routes.HomeController.coffee())
                         .withCookies(Http.Cookie.builder("LoginInformation", getLoginInformation()).withMaxAge(Duration.ofDays(15)).build());
             default:
-                return ok(views.html.loginConfirmed.render(userViewAdapter, getChangeNameForm(), getChangePasswordForm(), getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
+                return redirect(routes.HomeController.index())
                         .withCookies(Http.Cookie.builder("LoginInformation", getLoginInformation()).withMaxAge(Duration.ofDays(15)).build());
         }
 

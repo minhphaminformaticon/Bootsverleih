@@ -17,6 +17,7 @@ import models.view.ReservationsViewAdapter;
 import models.view.UserViewAdapter;
 import play.data.Form;
 import play.data.FormFactory;
+import play.data.validation.ValidationError;
 import play.i18n.MessagesApi;
 import play.mvc.*;
 import play.routing.JavaScriptReverseRouter;
@@ -56,6 +57,8 @@ public class HomeController extends Controller {
 
     private String loginInformation = "";
 
+    Http.Cookie reservationErrorCookieDelete = Http.Cookie.builder("Reservation" ,"").withMaxAge(Duration.ofDays(0)).build();
+
 
     /**
      * An action that renders an HTML page with a welcome message.
@@ -73,24 +76,50 @@ public class HomeController extends Controller {
                 .form(ReservationForm.class)
                 .withDirectFieldAccess(true)
                 .bindFromRequest(request);
-        BoatTable boatTable = new BoatTable();
-        BoatTableViewAdapter boatTableViewAdapter = new BoatTableViewAdapter(boatTable);
         if (submitForm.hasErrors()) {
+            List<ValidationError> validationErrors = submitForm.errors();
+            System.out.println(validationErrors);
+
+
+
+            List<String> errorKeysList = new ArrayList<>();
+            List<String> errorValuesList = new ArrayList<>();
+
+            for (int i = 0; i < validationErrors.size(); i++){
+                String errorValue = "/" + validationErrors.get(i).message();
+                errorValuesList.add(errorValue);
+                String errorKey = "/" + validationErrors.get(i).key();
+                errorKeysList.add(errorKey);
+            }
+
+            String errorKeys =  errorKeysList.toString();
+            String errorValues =  errorValuesList.toString();
+
+            String errors = errorKeys + errorValues;
+            String replaceAllCommas = errors.replace(",", ".");
+            String replaceAllSpaces = replaceAllCommas.replace(" ", ".");
+            String replaceAllDoubleDots = replaceAllSpaces.replace("..", "");
+            System.out.println(replaceAllCommas);
+            System.out.println(replaceAllSpaces);
+            System.out.println(replaceAllDoubleDots);
+
+            String modifiedErrors = replaceAllDoubleDots;
+
+
             Http.Headers headers = request.getHeaders();
             Optional<String> optReferer = headers.get("Referer");
             if (optReferer.isPresent()) {
                 String value = optReferer.get();
                 String shortenedValue = value.substring(value.lastIndexOf("/"));
-                getLogged(request);
                 switch (shortenedValue) {
                     case "/drinks":
-                        return badRequest(views.html.drinks.render(submitForm, logged, getBoatTableViewAdapter(), request, messages.preferred(request), true));
+                        return redirect(routes.HomeController.drinks()).withCookies(Http.Cookie.builder("Reservation", modifiedErrors).withMaxAge(Duration.ofDays(15)).build());
                     case "/aboutUs":
-                        return badRequest(views.html.aboutUs.render(submitForm, logged, getBoatTableViewAdapter(), request, messages.preferred(request), true));
+                        return redirect(routes.HomeController.aboutUs()).withCookies(Http.Cookie.builder("Reservation", modifiedErrors).withMaxAge(Duration.ofDays(15)).build());
                     case "/manage":
-                        return badRequest(views.html.manage.render(getBoatTableViewAdapter(), getBoatManagementForm(), submitForm, logged, request, messages.preferred(request), true));
+                        return redirect(routes.HomeController.manage()).withCookies(Http.Cookie.builder("Reservation", modifiedErrors).withMaxAge(Duration.ofDays(15)).build());
                     default:
-                        return badRequest(renderIndexView(request, submitForm, logged, true));
+                        return redirect(routes.HomeController.index()).withCookies(Http.Cookie.builder("Reservation", modifiedErrors).withMaxAge(Duration.ofDays(15)).build());
                 }
 
             } else {
@@ -165,10 +194,6 @@ public class HomeController extends Controller {
             userTable.save();
             loginInformation = "User" + userTable.firstName + "/" + userTable.lastName + "/" + userTable.email + "/" + userTable.password;
 
-
-
-
-
         return ok(views.html.signUpComplete.render(getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
                 .withCookies(Http.Cookie.builder("LoginInformation", getLoginInformation()).withMaxAge(Duration.ofDays(15)).build());
     }
@@ -206,10 +231,6 @@ public class HomeController extends Controller {
             }
         }
 
-
-
-
-
         System.out.println(request.session().get("desiredSite"));
         String value = String.valueOf(request.session().get("desiredSite"));
         String shortenValue;
@@ -220,20 +241,22 @@ public class HomeController extends Controller {
         }
         switch (shortenValue) {
             case "/drinks]":
-                return ok(views.html.drinks.render(getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
+                return redirect(routes.HomeController.drinks())
                         .withCookies(Http.Cookie.builder("LoginInformation", getLoginInformation()).withMaxAge(Duration.ofDays(15)).build());
             case "/aboutUs]":
-                return ok(views.html.aboutUs.render(getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
+                return redirect(routes.HomeController.aboutUs())
                         .withCookies(Http.Cookie.builder("LoginInformation", getLoginInformation()).withMaxAge(Duration.ofDays(15)).build());
             case "/manage]":
-                return ok(views.html.manage.render(getBoatTableViewAdapter(), getBoatManagementForm(), getNewReservationForm(), "🔐", request, messages.preferred(request), false))
+                return redirect(routes.HomeController.manage())
                         .withCookies(Http.Cookie.builder("LoginInformation", getLoginInformation()).withMaxAge(Duration.ofDays(15)).build());
             case "/manage/configuration]":
-                Form<Boat> boat = formFactory.form(Boat.class);
-                return ok(views.html.addingNewBoat.render(boat, getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
+                return redirect(routes.HomeController.addingBoat())
+                        .withCookies(Http.Cookie.builder("LoginInformation", getLoginInformation()).withMaxAge(Duration.ofDays(15)).build());
+            case "/coffee]":
+                return redirect(routes.HomeController.coffee())
                         .withCookies(Http.Cookie.builder("LoginInformation", getLoginInformation()).withMaxAge(Duration.ofDays(15)).build());
             default:
-                return ok(views.html.loginConfirmed.render(userViewAdapter, getChangeNameForm(), getChangePasswordForm(), getNewReservationForm(), "🔐", getBoatTableViewAdapter(), request, messages.preferred(request), false))
+                return redirect(routes.HomeController.index())
                         .withCookies(Http.Cookie.builder("LoginInformation", getLoginInformation()).withMaxAge(Duration.ofDays(15)).build());
         }
 
@@ -302,6 +325,7 @@ public class HomeController extends Controller {
         Integer definedID = findID(userFinder, request);
         System.out.println(definedID);
 
+
         if (definedID != null) {
             userTable = userFinder.getID(definedID);
 
@@ -340,27 +364,71 @@ public class HomeController extends Controller {
     }
     @With(LoginAction.class)
     public Result drinks(Http.Request request) {
+        Optional<Http.Cookie> cookie = request.getCookie("Reservation");
 
-        return ok(views.html.drinks.render(getNewReservationForm(), getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), false));
+        String cookieValueAsString = "panda";
+        if (cookie.isPresent()) {
+            cookieValueAsString = cookie.get().value();
+        }
+
+        Form<ReservationForm> form = getReservationFormErrors(cookieValueAsString);
+
+        if (!Objects.equals(cookieValueAsString, "panda")){
+            return badRequest(views.html.drinks.render(form, getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), true)).withCookies(reservationErrorCookieDelete);
+        }
+        return ok(views.html.drinks.render(getNewReservationForm(), getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), false)).withCookies(reservationErrorCookieDelete);
+
     }
 
     @With(LoginAction.class)
     public Result coffee(Http.Request request){
-        return ok(views.html.coffee.render(getNewReservationForm(), getBoatTableViewAdapter(), getLogged(request), request, messages.preferred(request), false));
+        Optional<Http.Cookie> cookie = request.getCookie("Reservation");
+        String cookieValueAsString = "panda";
+        if (cookie.isPresent()) {
+            cookieValueAsString = cookie.get().value();
+        }
+
+        Form<ReservationForm> form = getReservationFormErrors(cookieValueAsString);
+
+        if (!Objects.equals(cookieValueAsString, "panda")) {
+                return badRequest(views.html.coffee.render(form, getBoatTableViewAdapter(), getLogged(request), request, messages.preferred(request), false)).withCookies(reservationErrorCookieDelete);
+        }
+
+        return ok(views.html.coffee.render(getNewReservationForm(), getBoatTableViewAdapter(), getLogged(request), request, messages.preferred(request), false)).withCookies(reservationErrorCookieDelete);
     }
 
     @With(LoginAction.class)
     public Result aboutUs(Http.Request request) {
-        getLogged(request);
-        return ok(views.html.aboutUs.render(getNewReservationForm(), getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), false));
+        Optional<Http.Cookie> cookie = request.getCookie("Reservation");
+        String cookieValueAsString = "panda";
+        if (cookie.isPresent()) {
+            cookieValueAsString = cookie.get().value();
+        }
+
+        Form<ReservationForm> form = getReservationFormErrors(cookieValueAsString);
+
+        if (!Objects.equals(cookieValueAsString, "panda")){
+            return badRequest(views.html.aboutUs.render(form, getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), true)).withCookies(reservationErrorCookieDelete);
+        }
+        return ok(views.html.aboutUs.render(getNewReservationForm(), getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), false)).withCookies(reservationErrorCookieDelete);
     }
 
     @With(LoginAction.class)
     public Result manage(Http.Request request) {
         Form<BoatManagement> boatManagementForm = formFactory.form(BoatManagement.class);
         boatManagementForm.withDirectFieldAccess(true);
-        getLogged(request);
-        return ok(views.html.manage.render(getBoatTableViewAdapter(), boatManagementForm, getNewReservationForm(), getLogged(request), request, messages.preferred(request), false));
+        Optional<Http.Cookie> cookie = request.getCookie("Reservation");
+        String cookieValueAsString = "panda";
+        if (cookie.isPresent()) {
+            cookieValueAsString = cookie.get().value();
+        }
+
+        Form<ReservationForm> form = getReservationFormErrors(cookieValueAsString);
+
+        if (!Objects.equals(cookieValueAsString, "panda")){
+            return badRequest(views.html.manage.render(getBoatTableViewAdapter(), boatManagementForm, form, getLogged(request), request, messages.preferred(request), true)).withCookies(reservationErrorCookieDelete);
+        }
+        return ok(views.html.manage.render(getBoatTableViewAdapter(), boatManagementForm, getNewReservationForm(), getLogged(request), request, messages.preferred(request), false)).withCookies(reservationErrorCookieDelete);
     }
 
     @With(AdminAction.class)
@@ -401,7 +469,18 @@ public class HomeController extends Controller {
     @With(LoginAction.class)
     public Result addingBoat(Http.Request request) {
         Form<Boat> boat = formFactory.form(Boat.class);
-        return ok(views.html.addingNewBoat.render(boat, getNewReservationForm(), getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), false));
+        Optional<Http.Cookie> cookie = request.getCookie("Reservation");
+        String cookieValueAsString = "panda";
+        if (cookie.isPresent()) {
+            cookieValueAsString = cookie.get().value();
+        }
+
+        Form<ReservationForm> form = getReservationFormErrors(cookieValueAsString);
+
+        if (!Objects.equals(cookieValueAsString, "panda")){
+            return badRequest(views.html.addingNewBoat.render(boat, form, getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), true)).withCookies(reservationErrorCookieDelete);
+        }
+        return ok(views.html.addingNewBoat.render(boat, getNewReservationForm(), getLogged(request), getBoatTableViewAdapter(), request, messages.preferred(request), false)).withCookies(reservationErrorCookieDelete);
     }
 
     @With(LoginAction.class)
@@ -617,5 +696,50 @@ public class HomeController extends Controller {
 
     public String getLoginInformation(){
         return loginInformation;
+    }
+
+    public Form<ReservationForm> getReservationFormErrors(String reservationInformation){
+
+        Form<ReservationForm> form = getNewReservationForm();
+
+        String r = reservationInformation.replace(".", " ");
+        ArrayList<String> keysList = new ArrayList<>();
+        ArrayList<String> messagesList = new ArrayList<>();
+
+        if (!Objects.equals(r, "panda")){
+            String[] parts = r.split("\\]\\[");
+
+            String keysPart = parts[0].substring(1);
+            String[] keysArray = keysPart.split("/");
+            for (String key : keysArray) {
+                if (!key.isEmpty()) {
+                    keysList.add(key);
+                }
+            }
+
+            String messagesPart = parts[1].substring(0, parts[1].length() - 1);
+            String[] messagesArray = messagesPart.split("/");
+            for (String message : messagesArray) {
+                if (!message.isEmpty()) {
+                    messagesList.add(message);
+                }
+            }
+
+            for (int i = 0; i < keysList.size(); i++){
+                String key = keysList.get(i);
+                String messages = messagesList.get(i);
+                form = form.withError(new ValidationError(key, messages));
+            }
+        }
+
+//        ReservationForm reservationFormValues = new ReservationForm();
+//        reservationFormValues.date = "2024-07-07";
+//        form = form.fill(reservationFormValues);
+
+
+
+
+
+        return form;
     }
 }
